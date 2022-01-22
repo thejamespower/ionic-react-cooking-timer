@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimerDeleteButton render renders active state 1`] = `null`;
+
+exports[`TimerDeleteButton render renders complete state 1`] = `null`;
+
+exports[`TimerDeleteButton render renders default state 1`] = `
+<div>
+  <div
+    className="MuiCardActions-root-1"
+  >
+    <button
+      className="MuiButtonBase-root-30 MuiButton-root-4 MuiButton-text-6 MuiButton-flat-9 MuiCardActions-action-3"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex="0"
+      type="button"
+    >
+      <span
+        className="MuiButton-label-5"
+      >
+        Delete 
+        <svg
+          aria-hidden="true"
+          className="MuiSvgIcon-root-33"
+          focusable="false"
+          role="presentation"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+          />
+          <path
+            d="M0 0h24v24H0z"
+            fill="none"
+          />
+        </svg>
+      </span>
+      <span
+        className="MuiTouchRipple-root-42"
+      />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`TimerDeleteButton render renders superTimerActive state 1`] = `null`;

@@ -2,5 +2,8 @@
 	"appId": "power-pixel.cooking-timer",
 	"appName": "Cooking Timer",
 	"webDir": "build",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"server": {
+		"url": "http://192.168.0.22:8101"
+	}
 }

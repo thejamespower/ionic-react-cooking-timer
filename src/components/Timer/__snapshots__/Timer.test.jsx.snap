@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Timer render renders active state 1`] = `
+<div
+  className="MuiPaper-root-2 MuiPaper-elevation1-5 MuiPaper-rounded-3 MuiCard-root-1"
+>
+  <div
+    className="MuiCardContent-root-29"
+  >
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39 MuiTypography-colorTextSecondary-63 MuiTypography-gutterBottom-57"
+    >
+      Timer
+    </p>
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39"
+    >
+      
+    </p>
+    <span>
+      0
+      :
+      00
+      :
+      00
+      :
+      01
+    </span>
+  </div>
+  TimerDeleteButton
+</div>
+`;
+
+exports[`Timer render renders complete state 1`] = `
+<div
+  className="MuiPaper-root-2 MuiPaper-elevation1-5 MuiPaper-rounded-3 MuiCard-root-1"
+>
+  <div
+    className="MuiCardContent-root-29"
+  >
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39 MuiTypography-colorTextSecondary-63 MuiTypography-gutterBottom-57"
+    >
+      Timer
+    </p>
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39"
+    >
+      
+    </p>
+    <p>
+      Done!
+    </p>
+  </div>
+  TimerDeleteButton
+</div>
+`;
+
+exports[`Timer render renders default state 1`] = `
+<div
+  className="MuiPaper-root-2 MuiPaper-elevation1-5 MuiPaper-rounded-3 MuiCard-root-1"
+>
+  <div
+    className="MuiCardContent-root-29"
+  >
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39 MuiTypography-colorTextSecondary-63 MuiTypography-gutterBottom-57"
+    >
+      Timer
+    </p>
+    <p
+      className="MuiTypography-root-30 MuiTypography-body1-39"
+    >
+      
+    </p>
+    <p>
+      00:00:00
+      , Time to start: 
+      00:00:00
+    </p>
+  </div>
+  TimerDeleteButton
+</div>
+`;
