@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  IonCard,
-  IonCardContent,
   IonContent,
   IonHeader,
   IonPage,
@@ -37,19 +35,11 @@ const Home: React.FC<Props> = ({ timers }) => {
             <IonTitle size="large">Timers</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonCard>
-          <IonCardContent>
-            <TimerCreator />
-          </IonCardContent>
-        </IonCard>
+        <TimerCreator />
 
         <TimerList timers={timers} />
 
-        <IonCard>
-          <IonCardContent>
-            <EndTimeSetter />
-          </IonCardContent>
-        </IonCard>
+        <EndTimeSetter />
 
         <SuperTimer />
       </IonContent>

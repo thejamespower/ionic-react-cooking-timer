@@ -15,8 +15,6 @@ export default function CustomTimeField(props) {
       showSeconds
       value={value}
       onChange={(event, time) => onChange(time)}
-      style={{ width: 82, fontSize: 20 }}
-      // input={<Input />}
     />
   );
 }

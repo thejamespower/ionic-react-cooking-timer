@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import TimerDeleteButton from '../TimerDeleteButton';
-import { IonCard, IonCardContent, IonText } from '@ionic/react';
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonItem,
+  IonLabel,
+  IonText,
+} from '@ionic/react';
 
 class Timer extends Component {
   static propTypes = {
@@ -62,28 +70,44 @@ class Timer extends Component {
 
     return (
       <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Timer</IonCardTitle>
+        </IonCardHeader>
         <IonCardContent>
-          <IonText>Timer</IonText>
-          <IonText>{name}</IonText>
+          <IonItem>
+            <IonLabel>Name</IonLabel>
+            <IonText>{name}</IonText>
+          </IonItem>
           {active && (
-            <Countdown
-              date={moment().add(moment.duration(duration)).toDate()}
-              onComplete={this.handleComplete}
-            />
+            <IonItem>
+              <IonLabel>Duration</IonLabel>
+              <Countdown
+                date={moment().add(moment.duration(duration)).toDate()}
+                onComplete={this.handleComplete}
+              />
+            </IonItem>
           )}
           {!active && !complete && (
-            <IonText>
-              {duration}, Time to start: {timeToStart}
-            </IonText>
+            <>
+              <IonItem>
+                <IonLabel>Time To start</IonLabel>
+                <IonText>{timeToStart}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Duration</IonLabel>
+                <IonText>{duration}</IonText>
+              </IonItem>
+            </>
           )}
           {complete && <IonText>Done!</IonText>}
+
+          <TimerDeleteButton
+            superTimerActive={superTimerActive}
+            active={active}
+            id={id}
+            complete={complete}
+          />
         </IonCardContent>
-        <TimerDeleteButton
-          superTimerActive={superTimerActive}
-          active={active}
-          id={id}
-          complete={complete}
-        />
       </IonCard>
     );
   }

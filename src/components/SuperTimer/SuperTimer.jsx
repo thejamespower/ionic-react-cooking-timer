@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
-import { IonButton, IonCard, IonCardContent, IonText } from '@ionic/react';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonItem,
+  IonLabel,
+  IonText,
+} from '@ionic/react';
 
 class SuperTimer extends Component {
   static propTypes = {
@@ -64,40 +73,51 @@ class SuperTimer extends Component {
     const { duration, active, complete, endTime, startTime } = superTimer;
     return (
       <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>SuperTimer</IonCardTitle>
+        </IonCardHeader>
         <IonCardContent>
-          <IonText color="textSecondary" gutterBottom>
-            Total: {duration}
-          </IonText>
-          <IonText color="textSecondary" gutterBottom>
-            Start time: {startTime || 'Not set'}
-          </IonText>
-          <IonText color="textSecondary" gutterBottom>
-            End time: {endTime || 'Not set'}
-          </IonText>
+          <IonItem>
+            <IonLabel>Total</IonLabel>
+            <IonText>{duration}</IonText>
+          </IonItem>
+          <IonItem>
+            <IonLabel>Start time</IonLabel>
+            <IonText>{startTime || 'Not set'}</IonText>
+          </IonItem>
+          <IonItem>
+            <IonLabel>End time</IonLabel>
+            <IonText>{endTime || 'Not set'}</IonText>
+          </IonItem>
           {active && (
-            <Countdown
-              date={moment().add(moment.duration(duration)).toDate()}
-              dayInHours
-              onTick={this.handleTick}
-              onComplete={this.handleComplete}
-            />
+            <IonItem>
+              <Countdown
+                date={moment().add(moment.duration(duration)).toDate()}
+                dayInHours
+                onTick={this.handleTick}
+                onComplete={this.handleComplete}
+              />
+            </IonItem>
           )}
-          {complete && <p>All done!</p>}
-        </IonCardContent>
+          {complete && (
+            <IonItem>
+              <IonText>All done!</IonText>
+            </IonItem>
+          )}
 
-        {(!active || !complete) && (
-          <IonButton
-            disabled={duration === '00:00:00'}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              this.handleSubmitClick();
-            }}
-          >
-            Start
-          </IonButton>
-        )}
+          {(!active || !complete) && (
+            <IonButton
+              disabled={duration === '00:00:00'}
+              color="success"
+              expand="block"
+              onClick={() => {
+                this.handleSubmitClick();
+              }}
+            >
+              Start
+            </IonButton>
+          )}
+        </IonCardContent>
       </IonCard>
     );
   }

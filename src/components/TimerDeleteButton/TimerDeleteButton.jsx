@@ -11,7 +11,9 @@ const TimerDeleteButton = ({
 }) =>
   active || complete || superTimerActive ? null : (
     <div>
-      <IonButton onClick={() => deleteTimer(id)}>Delete</IonButton>
+      <IonButton onClick={() => deleteTimer(id)} expand="block" color="danger">
+        Delete
+      </IonButton>
     </div>
   );
 

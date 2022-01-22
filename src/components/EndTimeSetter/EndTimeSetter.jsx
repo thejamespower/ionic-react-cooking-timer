@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { IonButton } from '@ionic/react';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonItem,
+  IonLabel,
+} from '@ionic/react';
 import CustomTimeField from '../TimeField';
 
 const initialState = {
@@ -35,19 +43,26 @@ class EndTimeSetter extends Component {
     const { endTime } = this.state;
 
     return (
-      <>
-        <CustomTimeField value={endTime} onChange={this.changeEndTime} />
-
-        <IonButton
-          type="submit"
-          onClick={() => {
-            this.addEndTime(endTime);
-          }}
-          style={{ marginTop: '1rem' }}
-        >
-          Set end time
-        </IonButton>
-      </>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>EndTimeSetter</IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonItem>
+            <IonLabel>End time</IonLabel>
+            <CustomTimeField value={endTime} onChange={this.changeEndTime} />
+          </IonItem>
+          <IonButton
+            color="primary"
+            expand="block"
+            onClick={() => {
+              this.addEndTime(endTime);
+            }}
+          >
+            Set end time
+          </IonButton>
+        </IonCardContent>
+      </IonCard>
     );
   }
 }

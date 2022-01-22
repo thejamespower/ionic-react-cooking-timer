@@ -4,7 +4,16 @@ import CustomTimeField from '../TimeField';
 import convertSecondsToDuration from '../../lib/convertSecondsToDuration';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import { v4 as uuid } from 'uuid';
-import { IonButton, IonInput, IonItem } from '@ionic/react';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonInput,
+  IonItem,
+  IonLabel,
+} from '@ionic/react';
 
 const zeroDuration = '00:00:00';
 
@@ -129,57 +138,73 @@ class TimerCreator extends Component {
     const { duration, subTimers, name } = this.state;
 
     return (
-      <div>
-        <IonItem>
-          <IonInput value={name} onIonChange={this.handleChange('name')} />
-        </IonItem>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>TimerCreator</IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonItem>
+            <IonLabel>Name</IonLabel>
+            <IonInput value={name} onIonChange={this.handleChange('name')} />
+          </IonItem>
 
-        <IonItem>
-          <CustomTimeField value={duration} onChange={this.changeDuration} />
-        </IonItem>
+          <IonItem>
+            <IonLabel>Duration</IonLabel>
+            <CustomTimeField value={duration} onChange={this.changeDuration} />
+          </IonItem>
 
-        {subTimers.map((subTimer) => (
-          <div key={subTimer.id}>
-            <IonButton
-              type="button"
-              onClick={() => {
-                this.removeSubTimer(subTimer.id);
-              }}
-            >
-              X
-            </IonButton>
-            <IonInput
-              id="item-name"
-              label="Name"
-              value={subTimer.name}
-              onIonChange={(event) =>
-                this.changeSubTimerName(subTimer, event.target.value)
-              }
-            />
-            <CustomTimeField
-              value={subTimer.duration}
-              onChange={(value) => this.changeSubTimerDuration(subTimer, value)}
-            />
-          </div>
-        ))}
-        <IonButton
-          type="button"
-          onClick={() => {
-            this.createSubTimer();
-          }}
-        >
-          Do something else to it?
-        </IonButton>
+          {subTimers.map((subTimer) => (
+            <div key={subTimer.id}>
+              <IonButton
+                onClick={() => {
+                  this.removeSubTimer(subTimer.id);
+                }}
+              >
+                X
+              </IonButton>
 
-        <IonButton
-          type="submit"
-          onClick={() => {
-            this.addTimerToSuperTimer();
-          }}
-        >
-          Create timer
-        </IonButton>
-      </div>
+              <IonItem>
+                <IonLabel>Name</IonLabel>
+                <IonInput
+                  value={subTimer.name}
+                  onIonChange={(event) =>
+                    this.changeSubTimerName(subTimer, event.target.value)
+                  }
+                />
+              </IonItem>
+
+              <IonItem>
+                <IonLabel>Duration</IonLabel>
+                <CustomTimeField
+                  value={subTimer.duration}
+                  onChange={(value) =>
+                    this.changeSubTimerDuration(subTimer, value)
+                  }
+                />
+              </IonItem>
+            </div>
+          ))}
+          <IonButton
+            color="secondary"
+            expand="block"
+            onClick={() => {
+              this.createSubTimer();
+            }}
+          >
+            Do something else to it?
+          </IonButton>
+
+          <IonButton
+            color="primary"
+            expand="block"
+            onClick={() => {
+              this.addTimerToSuperTimer();
+            }}
+          >
+            Create timer
+          </IonButton>
+        </IonCardContent>
+      </IonCard>
     );
   }
 }
