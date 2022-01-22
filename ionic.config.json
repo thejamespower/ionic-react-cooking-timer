@@ -1,0 +1,8 @@
+{
+  "name": "Cooking Timer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "74750fb0"
+}

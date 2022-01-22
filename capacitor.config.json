@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Cooking Timer",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
