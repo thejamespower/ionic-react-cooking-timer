@@ -23,7 +23,7 @@ export interface Props {
   timers: Timer[];
 }
 
-const TIMER_CREATOR_OPEN_INITIAL_STATE = false;
+const TIMER_CREATOR_OPEN_INITIAL_STATE = true;
 
 const Home: React.FC<Props> = ({ timers }) => {
   const [timerCreatorOpen, setTimerCreatorOpen] = useState(

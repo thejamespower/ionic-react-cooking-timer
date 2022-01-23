@@ -618,6 +618,65 @@ describe('reducer', () => {
         const action = {
           type: SUB_TIMER_CREATED,
           payload: {
+            offset: '00:00:00',
+            duration: '00:00:00',
+            id: '1',
+            name: 'sub timer 1',
+          },
+        };
+        const newState = reducer(state, action);
+
+        it('returns correct state', () => {
+          expect(newState.toJS()).toEqual({
+            superTimer: {
+              active: false,
+              complete: false,
+              currentCount: 90,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 30,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:30',
+                timeToStartInSeconds: 30,
+              },
+              {
+                active: false,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+              {
+                active: false,
+                complete: false,
+                duration: '00:00:00',
+                durationInSeconds: 0,
+                id: '1',
+                name: 'sub timer 1',
+                offset: '00:00:00',
+                offsetInSeconds: 0,
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+
+      describe('when payload duration is non-zero value ("00:01:00")', () => {
+        const action = {
+          type: SUB_TIMER_CREATED,
+          payload: {
             offset: '00:01:00',
             duration: '00:01:00',
             id: '1',
@@ -663,65 +722,10 @@ describe('reducer', () => {
                 durationInSeconds: 60,
                 id: '1',
                 name: 'sub timer 1',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
                 offset: '00:01:00',
                 offsetInSeconds: 60,
-                timeToStart: '00:00:00',
-                timeToStartInSeconds: 0,
-              },
-            ],
-          });
-        });
-      });
-
-      describe('when payload duration is non-zero value ("00:01:00")', () => {
-        const action = {
-          type: TIMER_CREATED,
-          payload: {
-            duration: '00:01:00',
-            id: '3',
-            name: 'timer 3',
-          },
-        };
-        const newState = reducer(state, action);
-
-        it('returns correct state', () => {
-          expect(newState.toJS()).toEqual({
-            superTimer: {
-              active: false,
-              complete: false,
-              currentCount: 120,
-              duration: '00:02:00',
-              durationInSeconds: 120,
-              elapsedTime: 30,
-            },
-            timers: [
-              {
-                active: false,
-                complete: false,
-                duration: '00:01:00',
-                durationInSeconds: 60,
-                id: '1',
-                timeToStart: '00:01:00',
-                timeToStartInSeconds: 60,
-              },
-              {
-                active: false,
-                complete: false,
-                duration: '00:02:00',
-                durationInSeconds: 120,
-                id: '2',
-                timeToStart: '00:00:00',
-                timeToStartInSeconds: 0,
-              },
-              {
-                active: false,
-                complete: false,
-                duration: '00:01:00',
-                durationInSeconds: 60,
-                id: '3',
-                name: 'timer 3',
-                timeToStart: '00:01:00',
-                timeToStartInSeconds: 60,
               },
             ],
           });
@@ -1143,7 +1147,11 @@ describe('reducer', () => {
     });
 
     describe('given inactive and not in progress timer state', () => {
-      const state = TimerState({ active: false, inProgress: false })();
+      const state = TimerState({
+        subTimer: true,
+        active: false,
+        inProgress: false,
+      })();
 
       describe('when reducing new state from action', () => {
         const action = {
@@ -1180,6 +1188,17 @@ describe('reducer', () => {
                 id: '2',
                 timeToStart: '00:00:00',
                 timeToStartInSeconds: 0,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: 'subTimer A',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+                offset: '00:01:00',
+                offsetInSeconds: 60,
               },
             ],
           });

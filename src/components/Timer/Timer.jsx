@@ -14,6 +14,7 @@ import {
   IonItemOptions,
   IonItemSliding,
   IonLabel,
+  IonProgressBar,
   IonRow,
   IonText,
   useIonAlert,
@@ -22,10 +23,21 @@ import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 
 const Timer = (props) => {
   const {
-    timer: { name, active, duration, timeToStart, id, complete },
+    timer: {
+      name,
+      active,
+      duration,
+      timeToStart,
+      id,
+      complete,
+      parentId,
+      offsetInSeconds,
+    },
+    totalDurationInSeconds,
     superTimerActive,
     type,
     currentCount,
+    elapsedTime,
     completeTimer,
   } = props;
 
@@ -49,7 +61,7 @@ const Timer = (props) => {
         }}
       />
     ),
-    [active, timeToStart],
+    [active],
   );
 
   return type === 'card' ? (
@@ -92,43 +104,54 @@ const Timer = (props) => {
   ) : (
     //  @TODO: only slide when sliding options available (validation)
     <IonItemSliding>
-      {active}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '0',
-          left: '0',
-          width: `${
-            // nuance with timer completing before currentCount gets updated, 0 is never reached
-            currentCount === 1 && !active
-              ? 0
-              : (currentCount / convertDurationToSeconds(duration)) * 100
-          }%`,
-          height: '10%',
-          backgroundColor: 'green',
-          zIndex: '+2',
-        }}
-      />
-
       <IonItem>
-        <IonText>{name}</IonText>
-        {active && <div slot="end">{countdown}</div>}
+        <IonText>
+          {parentId ? '✅' : '⏱'} {name}
+        </IonText>
+        {active && !complete && (
+          <IonGrid slot="end">
+            <IonRow>
+              <IonCol>
+                <IonText>Left: {countdown}</IonText>
+              </IonCol>
+              <IonCol>
+                <IonText>Start: {timeToStart}</IonText>
+              </IonCol>
+              <IonCol>
+                <IonText>Duration: {duration}</IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
         {!active && !complete && (
           <IonGrid slot="end">
             <IonRow>
               <IonCol>
-                <IonText>{timeToStart}</IonText>
+                <IonText>Left: {duration}</IonText>
               </IonCol>
               <IonCol>
-                <IonText>{duration}</IonText>
+                <IonText>Start: {timeToStart}</IonText>
+              </IonCol>
+              <IonCol>
+                <IonText>Duration: {duration}</IonText>
               </IonCol>
             </IonRow>
           </IonGrid>
         )}
         {complete && (
-          <IonItem slot="end">
-            <IonText>Done!</IonText>
-          </IonItem>
+          <IonGrid slot="end">
+            <IonRow>
+              <IonCol>
+                <IonText>✅ Done!</IonText>
+              </IonCol>
+              <IonCol>
+                <IonText>Start: {timeToStart}</IonText>
+              </IonCol>
+              <IonCol>
+                <IonText>Duration: {duration}</IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
       </IonItem>
       <IonItemOptions slide="right">
@@ -141,6 +164,24 @@ const Timer = (props) => {
           />
         )}
       </IonItemOptions>
+      {console.log(
+        complete
+          ? 0
+          : active
+          ? (convertDurationToSeconds(duration) - elapsedTime) /
+            convertDurationToSeconds(duration)
+          : 1,
+      )}
+      <IonProgressBar
+        value={
+          complete
+            ? 0
+            : active
+            ? (convertDurationToSeconds(duration) - elapsedTime) /
+              convertDurationToSeconds(duration)
+            : 1
+        }
+      />
     </IonItemSliding>
   );
 };

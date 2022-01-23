@@ -64,7 +64,8 @@ class SuperTimer extends Component {
   }
 
   handleComplete() {
-    const { completeSuperTimer } = this.props;
+    const { completeSuperTimer, tickSuperTimer } = this.props;
+    tickSuperTimer(0);
     completeSuperTimer();
   }
 

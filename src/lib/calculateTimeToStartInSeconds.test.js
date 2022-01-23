@@ -5,6 +5,7 @@ describe('calculateTimeToStartInSeconds', () => {
     const totalTime = 1;
     const durationInSeconds = 2;
     const elapsedTime = 3;
+    const offset = 0;
 
     it('returns 0', () => {
       expect(
@@ -12,6 +13,7 @@ describe('calculateTimeToStartInSeconds', () => {
           totalTime,
           durationInSeconds,
           elapsedTime,
+          offset,
         ),
       ).toEqual(0);
     });
@@ -21,6 +23,7 @@ describe('calculateTimeToStartInSeconds', () => {
     const totalTime = 5;
     const durationInSeconds = 2;
     const elapsedTime = 1;
+    const offset = 0;
 
     it('returns correct time', () => {
       expect(
@@ -28,6 +31,7 @@ describe('calculateTimeToStartInSeconds', () => {
           totalTime,
           durationInSeconds,
           elapsedTime,
+          offset,
         ),
       ).toEqual(2);
     });
