@@ -4,12 +4,14 @@ import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import TimerDeleteButton from '../TimerDeleteButton';
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonIcon,
   IonItem,
   IonItemOptions,
   IonItemSliding,
@@ -20,7 +22,14 @@ import {
   useIonAlert,
 } from '@ionic/react';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
+import { checkmark } from 'ionicons/icons';
+import TimerCompleteButton from '../TimerCompleteButton';
 
+function IronRow(props) {
+  return null;
+}
+
+IronRow.propTypes = { children: PropTypes.node };
 const Timer = (props) => {
   const {
     timer: {
@@ -40,6 +49,13 @@ const Timer = (props) => {
     elapsedTime,
     completeTimer,
   } = props;
+
+  const value = complete
+    ? 0
+    : active
+    ? (convertDurationToSeconds(duration) - elapsedTime) /
+      convertDurationToSeconds(duration)
+    : 1;
 
   const [present] = useIonAlert();
 
@@ -71,8 +87,14 @@ const Timer = (props) => {
       </IonCardHeader>
       <IonCardContent>
         <IonItem>
-          <IonLabel>Name</IonLabel>
-          <IonText>{name}</IonText>
+          <IonGrid>
+            <IronRow>
+              <IonLabel>Name</IonLabel>
+            </IronRow>
+            <IronRow>
+              <IonText>{name}</IonText>
+            </IronRow>
+          </IonGrid>
         </IonItem>
         {active && (
           <IonItem>
@@ -82,12 +104,24 @@ const Timer = (props) => {
         {!active && !complete && (
           <>
             <IonItem>
-              <IonLabel>Time To start</IonLabel>
-              <IonText>{timeToStart}</IonText>
+              <IonGrid>
+                <IronRow>
+                  <IonLabel>Time To start</IonLabel>
+                </IronRow>
+                <IronRow>
+                  <IonText>{timeToStart}</IonText>
+                </IronRow>
+              </IonGrid>
             </IonItem>
             <IonItem>
-              <IonLabel>Duration</IonLabel>
-              <IonText>{duration}</IonText>
+              <IonGrid>
+                <IronRow>
+                  <IonLabel>Duration</IonLabel>
+                </IronRow>
+                <IronRow>
+                  <IonText>{duration}</IonText>
+                </IronRow>
+              </IonGrid>
             </IonItem>
           </>
         )}
@@ -112,10 +146,20 @@ const Timer = (props) => {
           <IonGrid slot="end">
             <IonRow>
               <IonCol>
-                <IonText>Left: {countdown}</IonText>
+                <IonGrid>
+                  <IonRow>
+                    <IonText>Left:</IonText>
+                  </IonRow>
+                  <IonRow>{countdown}</IonRow>
+                </IonGrid>
               </IonCol>
               <IonCol>
-                <IonText>Start: {timeToStart}</IonText>
+                <IonGrid>
+                  <IonRow>
+                    <IonText>Start</IonText>
+                  </IonRow>
+                  <IonRow>{timeToStart}</IonRow>
+                </IonGrid>
               </IonCol>
               <IonCol>
                 <IonText>Duration: {duration}</IonText>
@@ -130,7 +174,12 @@ const Timer = (props) => {
                 <IonText>Left: {duration}</IonText>
               </IonCol>
               <IonCol>
-                <IonText>Start: {timeToStart}</IonText>
+                <IonGrid>
+                  <IonRow>
+                    <IonText>Start</IonText>
+                  </IonRow>
+                  <IonRow>{timeToStart}</IonRow>
+                </IonGrid>
               </IonCol>
               <IonCol>
                 <IonText>Duration: {duration}</IonText>
@@ -145,7 +194,12 @@ const Timer = (props) => {
                 <IonText>✅ Done!</IonText>
               </IonCol>
               <IonCol>
-                <IonText>Start: {timeToStart}</IonText>
+                <IonGrid>
+                  <IonRow>
+                    <IonText>Start</IonText>
+                  </IonRow>
+                  <IonRow>{timeToStart}</IonRow>
+                </IonGrid>
               </IonCol>
               <IonCol>
                 <IonText>Duration: {duration}</IonText>
@@ -155,7 +209,16 @@ const Timer = (props) => {
         )}
       </IonItem>
       <IonItemOptions slide="right">
+        {parentId && (
+          <TimerCompleteButton
+            superTimerActive={superTimerActive}
+            active={active}
+            id={id}
+            complete={complete}
+          />
+        )}
         {!active && (
+          // @TODO: delete sub timer if delete parent
           <TimerDeleteButton
             superTimerActive={superTimerActive}
             active={active}
@@ -164,23 +227,9 @@ const Timer = (props) => {
           />
         )}
       </IonItemOptions>
-      {console.log(
-        complete
-          ? 0
-          : active
-          ? (convertDurationToSeconds(duration) - elapsedTime) /
-            convertDurationToSeconds(duration)
-          : 1,
-      )}
       <IonProgressBar
-        value={
-          complete
-            ? 0
-            : active
-            ? (convertDurationToSeconds(duration) - elapsedTime) /
-              convertDurationToSeconds(duration)
-            : 1
-        }
+        color={value > 0.3 ? 'success' : value > 0.1 ? 'warning' : 'danger'}
+        value={value}
       />
     </IonItemSliding>
   );

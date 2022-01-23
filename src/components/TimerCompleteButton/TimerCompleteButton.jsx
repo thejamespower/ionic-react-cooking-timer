@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { IonIcon, IonItemOption } from '@ionic/react';
-import { trash } from 'ionicons/icons';
+import { checkmark } from 'ionicons/icons';
 
-const TimerDeleteButton = ({
+const TimerCompleteButton = ({
   active,
   complete,
   superTimerActive,
-  deleteTimer,
+  deleteTimer: completeTimer,
   id,
 }) =>
   active || complete || superTimerActive ? null : (
-    <IonItemOption onClick={() => deleteTimer(id)} color="danger">
-      <IonIcon icon={trash} />
-      Delete
+    <IonItemOption onClick={() => completeTimer(id)} color="success">
+      <IonIcon icon={checkmark} />
+      Complete
     </IonItemOption>
   );
 
-TimerDeleteButton.propTypes = {
+TimerCompleteButton.propTypes = {
   active: PropTypes.bool.isRequired,
   complete: PropTypes.bool.isRequired,
   superTimerActive: PropTypes.bool.isRequired,
@@ -25,4 +25,4 @@ TimerDeleteButton.propTypes = {
   deleteTimer: PropTypes.func.isRequired,
 };
 
-export default TimerDeleteButton;
+export default TimerCompleteButton;

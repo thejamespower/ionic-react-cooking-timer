@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
@@ -16,141 +16,116 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
-import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import { play } from 'ionicons/icons';
 
-class SuperTimer extends Component {
-  static propTypes = {
-    superTimer: PropTypes.shape({
-      duration: PropTypes.string.isRequired,
-      durationInSeconds: PropTypes.number.isRequired,
-      active: PropTypes.bool.isRequired,
-      complete: PropTypes.bool.isRequired,
-      currentCount: PropTypes.number,
-      endTime: PropTypes.string,
-      startTime: PropTypes.string,
-    }).isRequired,
-    startSuperTimer: PropTypes.func.isRequired,
-    tickSuperTimer: PropTypes.func.isRequired,
-    completeSuperTimer: PropTypes.func.isRequired,
-  };
+const SuperTimer = (props) => {
+  const { superTimer, startSuperTimer, tickSuperTimer, completeSuperTimer } =
+    props;
+  const { duration, active, complete, endTime, startTime, elapsedTime } =
+    superTimer;
 
-  constructor(props) {
-    super(props);
-
-    this.handleSubmitClick = this.handleSubmitClick.bind(this);
-    this.handleTick = this.handleTick.bind(this);
-    this.handleComplete = this.handleComplete.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    const {
-      superTimer: { duration, active, endTime, startTime },
-    } = this.props;
-    return (
-      nextProps.superTimer.duration !== duration ||
-      nextProps.superTimer.active !== active ||
-      nextProps.superTimer.endTime !== endTime ||
-      nextProps.superTimer.startTime !== startTime
-    );
-  }
-
-  handleSubmitClick() {
-    const {
-      startSuperTimer,
-      superTimer: { duration },
-    } = this.props;
+  const handleSubmitClick = () => {
     if (duration === '00:00:00') return;
     startSuperTimer();
-  }
+  };
 
-  handleTick({ total }) {
-    const { tickSuperTimer } = this.props;
+  const handleTick = ({ total }) => {
     tickSuperTimer(total / 1000);
-  }
+  };
 
-  handleComplete() {
-    const { completeSuperTimer, tickSuperTimer } = this.props;
+  const handleComplete = () => {
     tickSuperTimer(0);
     completeSuperTimer();
-  }
+  };
 
-  render() {
-    const { superTimer } = this.props;
-    const { duration, active, complete, endTime, startTime, elapsedTime } =
-      superTimer;
+  const countdown = useMemo(
+    () => (
+      <Countdown
+        date={moment().add(moment.duration(duration)).toDate()}
+        dayInHours
+        onTick={handleTick}
+        onComplete={handleComplete}
+      />
+    ),
+    [duration, active, endTime, startTime],
+  );
 
-    return (
-      <IonCard>
-        <IonCardHeader>
-          <IonCardTitle>SuperTimer</IonCardTitle>
-        </IonCardHeader>
+  return (
+    <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>SuperTimer</IonCardTitle>
+      </IonCardHeader>
 
-        <IonCardContent>
+      <IonCardContent>
+        <IonItem>
+          <IonLabel>Total</IonLabel>
+          <IonText>{duration}</IonText>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel>Start time</IonLabel>
+          <IonText>{startTime || 'Not set'}</IonText>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel>End time</IonLabel>
+          <IonText>{endTime || 'Not set'}</IonText>
+        </IonItem>
+
+        {active && <IonItem>{countdown}</IonItem>}
+
+        {complete && (
           <IonItem>
-            <IonLabel>Total</IonLabel>
-            <IonText>{duration}</IonText>
+            <IonText>All done!</IonText>
           </IonItem>
+        )}
 
-          <IonItem>
-            <IonLabel>Start time</IonLabel>
-            <IonText>{startTime || 'Not set'}</IonText>
-          </IonItem>
+        {!active && !complete && (
+          <IonFooter>
+            <IonToolbar>
+              <IonButton
+                slot="end"
+                disabled={duration === '00:00:00'}
+                color="success"
+                onClick={() => {
+                  handleSubmitClick();
+                }}
+              >
+                <IonIcon icon={play} />
+                Start
+              </IonButton>
+            </IonToolbar>
+          </IonFooter>
+        )}
 
-          <IonItem>
-            <IonLabel>End time</IonLabel>
-            <IonText>{endTime || 'Not set'}</IonText>
-          </IonItem>
+        {/*<IonProgressBar*/}
+        {/*  value={*/}
+        {/*    complete*/}
+        {/*      ? 0*/}
+        {/*      : active*/}
+        {/*      ? (convertDurationToSeconds(duration) - elapsedTime) /*/}
+        {/*        convertDurationToSeconds(duration)*/}
+        {/*      : 1*/}
+        {/*  }*/}
+        {/*/>*/}
+      </IonCardContent>
+    </IonCard>
+  );
+};
 
-          {active && (
-            <IonItem>
-              <Countdown
-                date={moment().add(moment.duration(duration)).toDate()}
-                dayInHours
-                onTick={this.handleTick}
-                onComplete={this.handleComplete}
-              />
-            </IonItem>
-          )}
-
-          {complete && (
-            <IonItem>
-              <IonText>All done!</IonText>
-            </IonItem>
-          )}
-
-          {!active && !complete && (
-            <IonFooter>
-              <IonToolbar>
-                <IonButton
-                  slot="end"
-                  disabled={duration === '00:00:00'}
-                  color="success"
-                  onClick={() => {
-                    this.handleSubmitClick();
-                  }}
-                >
-                  <IonIcon icon={play} />
-                  Start
-                </IonButton>
-              </IonToolbar>
-            </IonFooter>
-          )}
-
-          {/*<IonProgressBar*/}
-          {/*  value={*/}
-          {/*    complete*/}
-          {/*      ? 0*/}
-          {/*      : active*/}
-          {/*      ? (convertDurationToSeconds(duration) - elapsedTime) /*/}
-          {/*        convertDurationToSeconds(duration)*/}
-          {/*      : 1*/}
-          {/*  }*/}
-          {/*/>*/}
-        </IonCardContent>
-      </IonCard>
-    );
-  }
-}
+SuperTimer.propTypes = {
+  superTimer: PropTypes.shape({
+    duration: PropTypes.string.isRequired,
+    durationInSeconds: PropTypes.number.isRequired,
+    active: PropTypes.bool.isRequired,
+    complete: PropTypes.bool.isRequired,
+    currentCount: PropTypes.number,
+    endTime: PropTypes.string,
+    startTime: PropTypes.string,
+  }).isRequired,
+  startSuperTimer: PropTypes.func.isRequired,
+  tickSuperTimer: PropTypes.func.isRequired,
+  completeSuperTimer: PropTypes.func.isRequired,
+};
 
 export default SuperTimer;
