@@ -8,9 +8,11 @@ function TimerList(props) {
   const { timers } = props;
   return (
     <IonList>
-      {timers.map((timer) => (
-        <Timer key={timer.id} timer={timer} />
-      ))}
+      {timers
+        .sort((a, b) => a.timeToStartInSeconds - b.timeToStartInSeconds)
+        .map((timer) => (
+          <Timer key={timer.id} timer={timer} />
+        ))}
     </IonList>
   );
 }

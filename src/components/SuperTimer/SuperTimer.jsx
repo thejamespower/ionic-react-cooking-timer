@@ -8,10 +8,16 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonFooter,
+  IonIcon,
   IonItem,
   IonLabel,
+  IonProgressBar,
   IonText,
+  IonToolbar,
 } from '@ionic/react';
+import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
+import { play } from 'ionicons/icons';
 
 class SuperTimer extends Component {
   static propTypes = {
@@ -71,7 +77,8 @@ class SuperTimer extends Component {
 
   render() {
     const { superTimer } = this.props;
-    const { duration, active, complete, endTime, startTime } = superTimer;
+    const { duration, active, complete, endTime, startTime, elapsedTime } =
+      superTimer;
 
     return (
       <IonCard>
@@ -113,17 +120,33 @@ class SuperTimer extends Component {
           )}
 
           {!active && !complete && (
-            <IonButton
-              disabled={duration === '00:00:00'}
-              color="success"
-              expand="block"
-              onClick={() => {
-                this.handleSubmitClick();
-              }}
-            >
-              Start
-            </IonButton>
+            <IonFooter>
+              <IonToolbar>
+                <IonButton
+                  slot="end"
+                  disabled={duration === '00:00:00'}
+                  color="success"
+                  onClick={() => {
+                    this.handleSubmitClick();
+                  }}
+                >
+                  <IonIcon icon={play} />
+                  Start
+                </IonButton>
+              </IonToolbar>
+            </IonFooter>
           )}
+
+          {/*<IonProgressBar*/}
+          {/*  value={*/}
+          {/*    complete*/}
+          {/*      ? 0*/}
+          {/*      : active*/}
+          {/*      ? (convertDurationToSeconds(duration) - elapsedTime) /*/}
+          {/*        convertDurationToSeconds(duration)*/}
+          {/*      : 1*/}
+          {/*  }*/}
+          {/*/>*/}
         </IonCardContent>
       </IonCard>
     );

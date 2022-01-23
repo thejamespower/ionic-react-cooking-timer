@@ -40,13 +40,13 @@ const USE_DEV_STATE = true;
 
 const initialState = USE_DEV_STATE
   ? {
-      duration: '00:20:00',
+      duration: '00:02:00',
       subTimers: [
         {
           name: 'Flip',
           id: 'flip',
           parentId: 'chips',
-          duration: '00:10:00',
+          duration: '00:01:00',
         },
       ],
       name: 'Chips 🍟',
@@ -215,12 +215,12 @@ class TimerCreator extends Component {
                 {duration}
                 <IonIcon icon={time} />
               </IonButton>
-              <IonPopover trigger="open-time-input" showBackdrop={false}>
-                <CustomTimeField
-                  value={duration}
-                  onChange={this.changeDuration}
-                />
-              </IonPopover>
+              {/*<IonPopover trigger="open-time-input" showBackdrop={false}>*/}
+              <CustomTimeField
+                value={duration}
+                onChange={this.changeDuration}
+              />
+              {/*</IonPopover>*/}
             </IonItem>
 
             <IonList>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IonDatetime } from '@ionic/react';
+import { IonDatetime, IonInput } from '@ionic/react';
+import TimeField from 'react-simple-timefield';
 
 export const convertDateToDuration = (value) => {
   return value.substr(11, 8);
@@ -15,14 +16,21 @@ export default function CustomTimeField(props) {
   // console.log(value, renderValue);
 
   return (
-    <IonDatetime
-      presentation="time"
-      value={renderValue}
-      onIonChange={({ detail: { value: newValue } }) => {
-        return onChange(convertDateToDuration(newValue));
-      }}
-      showDefaultButtons
-    />
+    <>
+      <TimeField
+        showSeconds
+        value={value}
+        onChange={(event, time) => onChange(time)}
+      />
+      {/*<IonDatetime*/}
+      {/*  presentation="time"*/}
+      {/*  value={renderValue}*/}
+      {/*  onIonChange={({ detail: { value: newValue } }) => {*/}
+      {/*    return onChange(convertDateToDuration(newValue));*/}
+      {/*  }}*/}
+      {/*  showDefaultButtons*/}
+      {/*/>*/}
+    </>
   );
 }
 

@@ -51,7 +51,7 @@ const Timer = (props) => {
           completeTimer(id);
           await present({
             cssClass: 'my-css',
-            header: 'Timer finished!',
+            header: parentId ? 'Action required!' : 'Timer finished!',
             message: `${name} timer finished`,
             buttons: [
               { text: 'Ok', handler: (d) => console.log('ok pressed') },
