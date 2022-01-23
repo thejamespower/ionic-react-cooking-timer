@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import {
   IonContent,
+  IonFab,
+  IonFabButton,
+  IonFooter,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -62,9 +66,10 @@ const Home: React.FC<Props> = ({ timers }) => {
         />
 
         {/*<EndTimeSetter />*/}
-
-        <SuperTimer />
       </IonContent>
+      <IonFooter>
+        <SuperTimer />
+      </IonFooter>
     </IonPage>
   );
 };

@@ -14,10 +14,11 @@ import {
   IonItem,
   IonLabel,
   IonProgressBar,
+  IonRow,
   IonText,
   IonToolbar,
 } from '@ionic/react';
-import { play } from 'ionicons/icons';
+import { pause, play, timer } from 'ionicons/icons';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 
 const SuperTimer = (props) => {
@@ -62,7 +63,7 @@ const SuperTimer = (props) => {
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardTitle>Start?</IonCardTitle>
+        <IonCardTitle className="ion-text-center">Controls</IonCardTitle>
       </IonCardHeader>
 
       <IonCardContent>
@@ -81,21 +82,29 @@ const SuperTimer = (props) => {
         {/*  <IonText>{endTime || 'Not set'}</IonText>*/}
         {/*</IonItem>*/}
 
-        {active && <IonItem>{countdown}</IonItem>}
-
         {complete && (
           <IonItem>
             <IonText>All done!</IonText>
           </IonItem>
         )}
 
-        {!active && !complete && (
-          <IonFooter>
-            <IonToolbar>
-              <IonText>{duration}</IonText>
-              <IonButtons slot="end">
+        <IonFooter>
+          <IonToolbar>
+            <IonRow className="ion-justify-content-center">
+              <IonButtons>
                 <IonButton
-                  disabled={duration === '00:00:00'}
+                  disabled={!active || duration === '00:00:00'}
+                  color="warning"
+                  onClick={() => {}}
+                >
+                  <IonIcon icon={pause} slot="icon-only">
+                    Pause
+                  </IonIcon>
+                </IonButton>
+                {active && <IonItem>{countdown}</IonItem>}
+                {!active && <IonText>{duration}</IonText>}
+                <IonButton
+                  disabled={active || duration === '00:00:00'}
                   color="success"
                   type="submit"
                   onClick={() => {
@@ -107,9 +116,9 @@ const SuperTimer = (props) => {
                   </IonIcon>
                 </IonButton>
               </IonButtons>
-            </IonToolbar>
-          </IonFooter>
-        )}
+            </IonRow>
+          </IonToolbar>
+        </IonFooter>
 
         <IonProgressBar
           color={value > 0.3 ? 'success' : value > 0.1 ? 'warning' : 'danger'}

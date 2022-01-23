@@ -132,7 +132,11 @@ const reducer = handleActions(
       }
 
       // Get timers to keep
-      const timers = [...state.timers.filter((x) => x.id !== payload)];
+      const timers = [
+        ...state.timers.filter(
+          (x) => x.id !== payload && x.parentId !== payload,
+        ),
+      ];
 
       const totalDurationInSeconds = getTotalDurationInSeconds(timers);
 

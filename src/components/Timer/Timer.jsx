@@ -122,7 +122,7 @@ const Timer = (props) => {
     <IonItemSliding>
       <IonItem>
         <IonText>
-          {parentId ? '✅' : '⏱'} {name}
+          {parentId ? '⏱✅' : '⏱'} {name}
         </IonText>
         {active && !complete && (
           <IonGrid slot="end">
