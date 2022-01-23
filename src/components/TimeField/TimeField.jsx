@@ -1,20 +1,27 @@
 import React from 'react';
-import TimeField from 'react-simple-timefield';
 import PropTypes from 'prop-types';
-import { IonInput } from '@ionic/react';
+import { IonDatetime } from '@ionic/react';
 
-export const Input = ({ onChange }) => {
-  return <IonInput inputMode="numeric" onIonChange={onChange} />;
+export const convertDateToDuration = (value) => {
+  return value.substr(11, 8);
 };
 
 export default function CustomTimeField(props) {
   const { onChange, value } = props;
+  const renderValue = new Date(
+    Date.parse(`01 Jan 1970 ${value} GMT`),
+  ).toISOString();
+
+  // console.log(value, renderValue);
 
   return (
-    <TimeField
-      showSeconds
-      value={value}
-      onChange={(event, time) => onChange(time)}
+    <IonDatetime
+      presentation="time"
+      value={renderValue}
+      onIonChange={({ detail: { value: newValue } }) => {
+        return onChange(convertDateToDuration(newValue));
+      }}
+      showDefaultButtons
     />
   );
 }

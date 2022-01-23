@@ -111,7 +111,7 @@ class SuperTimer extends Component {
             </IonItem>
           )}
 
-          {(!active || !complete) && (
+          {!active && !complete && (
             <IonButton
               disabled={duration === '00:00:00'}
               color="success"

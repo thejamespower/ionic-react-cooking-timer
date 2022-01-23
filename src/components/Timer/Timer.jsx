@@ -8,14 +8,18 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonCol,
+  IonGrid,
   IonItem,
-  IonItemOption,
   IonItemOptions,
   IonItemSliding,
   IonLabel,
+  IonRow,
   IonText,
 } from '@ionic/react';
+import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 
+// @TODO: convert to functional component
 class Timer extends Component {
   static propTypes = {
     timer: PropTypes.shape({
@@ -27,6 +31,7 @@ class Timer extends Component {
       timeToStartInSeconds: PropTypes.number.isRequired,
       complete: PropTypes.bool.isRequired,
     }).isRequired,
+    currentCount: PropTypes.number,
     completeTimer: PropTypes.func.isRequired,
     superTimerActive: PropTypes.bool.isRequired,
     type: PropTypes.oneOf(['card', 'list-slider']),
@@ -69,6 +74,7 @@ class Timer extends Component {
       timer: { name, active, timeToStart, id, complete },
       superTimerActive,
       type,
+      currentCount,
     } = this.props;
 
     const { duration } = this.state;
@@ -115,18 +121,55 @@ class Timer extends Component {
         </IonCardContent>
       </IonCard>
     ) : (
+      //  @TODO: only slide when sliding options available (validation)
       <IonItemSliding>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            left: '0',
+            width: `${
+              (currentCount / convertDurationToSeconds(duration)) * 100
+            }%`,
+            height: '10%',
+            backgroundColor: 'green',
+            zIndex: '+2',
+          }}
+        />
+
         <IonItem>
-          <IonLabel>Name</IonLabel>
           <IonText>{name}</IonText>
+          {active && (
+            <div slot="end">
+              <Countdown
+                date={moment().add(moment.duration(duration)).toDate()}
+                onComplete={this.handleComplete}
+              />
+            </div>
+          )}
+          {!active && !complete && (
+            <IonGrid slot="end">
+              <IonRow>
+                <IonCol>
+                  <IonText>{timeToStart}</IonText>
+                </IonCol>
+                <IonCol>
+                  <IonText>{duration}</IonText>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          )}
+          {complete && <IonText>Done!</IonText>}
         </IonItem>
         <IonItemOptions slide="right">
-          <TimerDeleteButton
-            superTimerActive={superTimerActive}
-            active={active}
-            id={id}
-            complete={complete}
-          />
+          {!active && (
+            <TimerDeleteButton
+              superTimerActive={superTimerActive}
+              active={active}
+              id={id}
+              complete={complete}
+            />
+          )}
         </IonItemOptions>
       </IonItemSliding>
     );

@@ -23,8 +23,12 @@ export interface Props {
   timers: Timer[];
 }
 
+const TIMER_CREATOR_OPEN_INITIAL_STATE = false;
+
 const Home: React.FC<Props> = ({ timers }) => {
-  const [timerCreatorOpen, setTimerCreatorOpen] = useState(false);
+  const [timerCreatorOpen, setTimerCreatorOpen] = useState(
+    TIMER_CREATOR_OPEN_INITIAL_STATE,
+  );
 
   return (
     <IonPage>
@@ -43,7 +47,7 @@ const Home: React.FC<Props> = ({ timers }) => {
 
         {/*{timerCreatorOpen && (*/}
         <TimerCreator
-          onClose={() => setTimerCreatorOpen(false)}
+          close={() => setTimerCreatorOpen(false)}
           isOpen={timerCreatorOpen}
         />
         {/*)}*/}
@@ -57,7 +61,7 @@ const Home: React.FC<Props> = ({ timers }) => {
           }}
         />
 
-        <EndTimeSetter />
+        {/*<EndTimeSetter />*/}
 
         <SuperTimer />
       </IonContent>
