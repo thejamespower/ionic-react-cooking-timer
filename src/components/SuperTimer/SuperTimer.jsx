@@ -71,24 +71,29 @@ class SuperTimer extends Component {
   render() {
     const { superTimer } = this.props;
     const { duration, active, complete, endTime, startTime } = superTimer;
+
     return (
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>SuperTimer</IonCardTitle>
         </IonCardHeader>
+
         <IonCardContent>
           <IonItem>
             <IonLabel>Total</IonLabel>
             <IonText>{duration}</IonText>
           </IonItem>
+
           <IonItem>
             <IonLabel>Start time</IonLabel>
             <IonText>{startTime || 'Not set'}</IonText>
           </IonItem>
+
           <IonItem>
             <IonLabel>End time</IonLabel>
             <IonText>{endTime || 'Not set'}</IonText>
           </IonItem>
+
           {active && (
             <IonItem>
               <Countdown
@@ -99,6 +104,7 @@ class SuperTimer extends Component {
               />
             </IonItem>
           )}
+
           {complete && (
             <IonItem>
               <IonText>All done!</IonText>

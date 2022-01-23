@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Timer from '../Timer';
+import { IonList } from '@ionic/react';
 
 function TimerList(props) {
   const { timers } = props;
   return (
-    <div>
-      {timers.map(timer => (
+    <IonList>
+      {timers.map((timer) => (
         <Timer key={timer.id} timer={timer} />
       ))}
-    </div>
+    </IonList>
   );
 }
 

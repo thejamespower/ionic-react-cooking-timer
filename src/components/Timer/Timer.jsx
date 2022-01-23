@@ -9,6 +9,9 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
   IonLabel,
   IonText,
 } from '@ionic/react';
@@ -26,6 +29,7 @@ class Timer extends Component {
     }).isRequired,
     completeTimer: PropTypes.func.isRequired,
     superTimerActive: PropTypes.bool.isRequired,
+    type: PropTypes.oneOf(['card', 'list-slider']),
   };
 
   constructor(props) {
@@ -64,11 +68,12 @@ class Timer extends Component {
     const {
       timer: { name, active, timeToStart, id, complete },
       superTimerActive,
+      type,
     } = this.props;
 
     const { duration } = this.state;
 
-    return (
+    return type === 'card' ? (
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>Timer</IonCardTitle>
@@ -109,6 +114,21 @@ class Timer extends Component {
           />
         </IonCardContent>
       </IonCard>
+    ) : (
+      <IonItemSliding>
+        <IonItem>
+          <IonLabel>Name</IonLabel>
+          <IonText>{name}</IonText>
+        </IonItem>
+        <IonItemOptions slide="right">
+          <TimerDeleteButton
+            superTimerActive={superTimerActive}
+            active={active}
+            id={id}
+            complete={complete}
+          />
+        </IonItemOptions>
+      </IonItemSliding>
     );
   }
 }

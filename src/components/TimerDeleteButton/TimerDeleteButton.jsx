@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IonButton } from '@ionic/react';
+import { IonItemOption } from '@ionic/react';
 
 const TimerDeleteButton = ({
   active,
@@ -10,11 +10,9 @@ const TimerDeleteButton = ({
   id,
 }) =>
   active || complete || superTimerActive ? null : (
-    <div>
-      <IonButton onClick={() => deleteTimer(id)} expand="block" color="danger">
-        Delete
-      </IonButton>
-    </div>
+    <IonItemOption onClick={() => deleteTimer(id)} color="danger">
+      Delete
+    </IonItemOption>
   );
 
 TimerDeleteButton.propTypes = {
