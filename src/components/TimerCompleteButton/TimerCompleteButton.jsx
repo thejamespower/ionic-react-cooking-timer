@@ -10,7 +10,7 @@ const TimerCompleteButton = ({
   deleteTimer: completeTimer,
   id,
 }) =>
-  active || complete || superTimerActive ? null : (
+  !active || !superTimerActive ? null : (
     <IonItemOption onClick={() => completeTimer(id)} color="success">
       <IonIcon icon={checkmark} slot="icon-only" />
     </IonItemOption>
