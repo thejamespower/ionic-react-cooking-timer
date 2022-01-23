@@ -80,62 +80,44 @@ const Timer = (props) => {
     [active],
   );
 
-  return type === 'card' ? (
-    <IonCard>
-      <IonCardHeader>
-        <IonCardTitle>Timer</IonCardTitle>
-      </IonCardHeader>
-      <IonCardContent>
-        <IonItem>
-          <IonGrid>
-            <IronRow>
-              <IonLabel>Name</IonLabel>
-            </IronRow>
-            <IronRow>
-              <IonText>{name}</IonText>
-            </IronRow>
-          </IonGrid>
-        </IonItem>
-        {active && (
-          <IonItem>
-            <IonLabel>Duration</IonLabel>
-          </IonItem>
-        )}
-        {!active && !complete && (
-          <>
-            <IonItem>
-              <IonGrid>
-                <IronRow>
-                  <IonLabel>Time To start</IonLabel>
-                </IronRow>
-                <IronRow>
-                  <IonText>{timeToStart}</IonText>
-                </IronRow>
-              </IonGrid>
-            </IonItem>
-            <IonItem>
-              <IonGrid>
-                <IronRow>
-                  <IonLabel>Duration</IonLabel>
-                </IronRow>
-                <IronRow>
-                  <IonText>{duration}</IonText>
-                </IronRow>
-              </IonGrid>
-            </IonItem>
-          </>
-        )}
-        {complete && <IonText>Done!</IonText>}
+  const TimeToStart = () => (
+    <IonCol>
+      <IonGrid>
+        <IonRow className="ion-justify-content-end">
+          <IonText>Start</IonText>
+        </IonRow>
+        <IonRow className="ion-justify-content-end">{timeToStart}</IonRow>
+      </IonGrid>
+    </IonCol>
+  );
 
-        <TimerDeleteButton
-          superTimerActive={superTimerActive}
-          active={active}
-          id={id}
-          complete={complete}
-        />
-      </IonCardContent>
-    </IonCard>
-  ) : (
+  const LeftDuration = () => (
+    <IonCol>
+      <IonGrid>
+        <IonRow className="ion-justify-content-end">
+          <IonText>Left</IonText>
+        </IonRow>
+        <IonRow className="ion-justify-content-end">
+          <IonText>{duration}</IonText>
+        </IonRow>
+      </IonGrid>
+    </IonCol>
+  );
+
+  const Duration = () => (
+    <IonCol>
+      <IonGrid>
+        <IonRow className="ion-justify-content-end">
+          <IonText>Duration</IonText>
+        </IonRow>
+        <IonRow className="ion-justify-content-end">
+          <IonText>{duration}</IonText>
+        </IonRow>
+      </IonGrid>
+    </IonCol>
+  );
+
+  return (
     //  @TODO: only slide when sliding options available (validation)
     <IonItemSliding>
       <IonItem>
@@ -147,43 +129,25 @@ const Timer = (props) => {
             <IonRow>
               <IonCol>
                 <IonGrid>
-                  <IonRow>
-                    <IonText>Left:</IonText>
+                  <IonRow className="ion-justify-content-end">
+                    <IonText>Left</IonText>
                   </IonRow>
-                  <IonRow>{countdown}</IonRow>
+                  <IonRow className="ion-justify-content-end">
+                    {countdown}
+                  </IonRow>
                 </IonGrid>
               </IonCol>
-              <IonCol>
-                <IonGrid>
-                  <IonRow>
-                    <IonText>Start</IonText>
-                  </IonRow>
-                  <IonRow>{timeToStart}</IonRow>
-                </IonGrid>
-              </IonCol>
-              <IonCol>
-                <IonText>Duration: {duration}</IonText>
-              </IonCol>
+              <TimeToStart />
+              <Duration />
             </IonRow>
           </IonGrid>
         )}
         {!active && !complete && (
           <IonGrid slot="end">
             <IonRow>
-              <IonCol>
-                <IonText>Left: {duration}</IonText>
-              </IonCol>
-              <IonCol>
-                <IonGrid>
-                  <IonRow>
-                    <IonText>Start</IonText>
-                  </IonRow>
-                  <IonRow>{timeToStart}</IonRow>
-                </IonGrid>
-              </IonCol>
-              <IonCol>
-                <IonText>Duration: {duration}</IonText>
-              </IonCol>
+              <LeftDuration />
+              <TimeToStart />
+              <Duration />
             </IonRow>
           </IonGrid>
         )}
@@ -193,17 +157,8 @@ const Timer = (props) => {
               <IonCol>
                 <IonText>✅ Done!</IonText>
               </IonCol>
-              <IonCol>
-                <IonGrid>
-                  <IonRow>
-                    <IonText>Start</IonText>
-                  </IonRow>
-                  <IonRow>{timeToStart}</IonRow>
-                </IonGrid>
-              </IonCol>
-              <IonCol>
-                <IonText>Duration: {duration}</IonText>
-              </IonCol>
+              <TimeToStart />
+              <Duration />
             </IonRow>
           </IonGrid>
         )}

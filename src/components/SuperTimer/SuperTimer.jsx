@@ -4,6 +4,7 @@ import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -17,6 +18,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { play } from 'ionicons/icons';
+import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 
 const SuperTimer = (props) => {
   const { superTimer, startSuperTimer, tickSuperTimer, completeSuperTimer } =
@@ -50,27 +52,34 @@ const SuperTimer = (props) => {
     [duration, active, endTime, startTime],
   );
 
+  const value = complete
+    ? 0
+    : active
+    ? (convertDurationToSeconds(duration) - elapsedTime) /
+      convertDurationToSeconds(duration)
+    : 1;
+
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardTitle>SuperTimer</IonCardTitle>
+        <IonCardTitle>Start?</IonCardTitle>
       </IonCardHeader>
 
       <IonCardContent>
-        <IonItem>
-          <IonLabel>Total</IonLabel>
-          <IonText>{duration}</IonText>
-        </IonItem>
+        {/*<IonItem>*/}
+        {/*  <IonLabel>Total</IonLabel>*/}
+        {/*  <IonText>{duration}</IonText>*/}
+        {/*</IonItem>*/}
 
-        <IonItem>
-          <IonLabel>Start time</IonLabel>
-          <IonText>{startTime || 'Not set'}</IonText>
-        </IonItem>
+        {/*<IonItem>*/}
+        {/*  <IonLabel>Start time</IonLabel>*/}
+        {/*  <IonText>{startTime || 'Not set'}</IonText>*/}
+        {/*</IonItem>*/}
 
-        <IonItem>
-          <IonLabel>End time</IonLabel>
-          <IonText>{endTime || 'Not set'}</IonText>
-        </IonItem>
+        {/*<IonItem>*/}
+        {/*  <IonLabel>End time</IonLabel>*/}
+        {/*  <IonText>{endTime || 'Not set'}</IonText>*/}
+        {/*</IonItem>*/}
 
         {active && <IonItem>{countdown}</IonItem>}
 
@@ -83,31 +92,29 @@ const SuperTimer = (props) => {
         {!active && !complete && (
           <IonFooter>
             <IonToolbar>
-              <IonButton
-                slot="end"
-                disabled={duration === '00:00:00'}
-                color="success"
-                onClick={() => {
-                  handleSubmitClick();
-                }}
-              >
-                <IonIcon icon={play} />
-                Start
-              </IonButton>
+              <IonText>{duration}</IonText>
+              <IonButtons slot="end">
+                <IonButton
+                  disabled={duration === '00:00:00'}
+                  color="success"
+                  type="submit"
+                  onClick={() => {
+                    handleSubmitClick();
+                  }}
+                >
+                  <IonIcon icon={play} slot="icon-only">
+                    Start
+                  </IonIcon>
+                </IonButton>
+              </IonButtons>
             </IonToolbar>
           </IonFooter>
         )}
 
-        {/*<IonProgressBar*/}
-        {/*  value={*/}
-        {/*    complete*/}
-        {/*      ? 0*/}
-        {/*      : active*/}
-        {/*      ? (convertDurationToSeconds(duration) - elapsedTime) /*/}
-        {/*        convertDurationToSeconds(duration)*/}
-        {/*      : 1*/}
-        {/*  }*/}
-        {/*/>*/}
+        <IonProgressBar
+          color={value > 0.3 ? 'success' : value > 0.1 ? 'warning' : 'danger'}
+          value={value}
+        />
       </IonCardContent>
     </IonCard>
   );
