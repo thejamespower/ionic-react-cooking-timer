@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonLabel,
 } from '@ionic/react';
-import { ellipse, triangle } from 'ionicons/icons';
+import { settingsOutline, timerOutline } from 'ionicons/icons';
 
 const Router = () => (
   <IonReactRouter>
@@ -21,11 +21,11 @@ const Router = () => (
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="timers" href="/">
-          <IonIcon icon={triangle} />
+          <IonIcon icon={timerOutline} />
           <IonLabel>Timers</IonLabel>
         </IonTabButton>
         <IonTabButton tab="tab2" href="/tab2">
-          <IonIcon icon={ellipse} />
+          <IonIcon icon={settingsOutline} />
           <IonLabel>Settings</IonLabel>
         </IonTabButton>
       </IonTabBar>

@@ -12,8 +12,7 @@ const TimerDeleteButton = ({
 }) =>
   active || complete || superTimerActive ? null : (
     <IonItemOption onClick={() => deleteTimer(id)} color="danger">
-      <IonIcon icon={trash} />
-      Delete
+      <IonIcon icon={trash} slot="icon-only" />
     </IonItemOption>
   );
 

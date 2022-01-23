@@ -119,74 +119,76 @@ const Timer = (props) => {
 
   return (
     //  @TODO: only slide when sliding options available (validation)
-    <IonItemSliding>
-      <IonItem>
-        <IonText>
-          {parentId ? '⏱✅' : '⏱'} {name}
-        </IonText>
-        {active && !complete && (
-          <IonGrid slot="end">
-            <IonRow>
-              <IonCol>
-                <IonGrid>
-                  <IonRow className="ion-justify-content-end">
-                    <IonText>Left</IonText>
-                  </IonRow>
-                  <IonRow className="ion-justify-content-end">
-                    {countdown}
-                  </IonRow>
-                </IonGrid>
-              </IonCol>
-              <TimeToStart />
-              <Duration />
-            </IonRow>
-          </IonGrid>
-        )}
-        {!active && !complete && (
-          <IonGrid slot="end">
-            <IonRow>
-              <LeftDuration />
-              <TimeToStart />
-              <Duration />
-            </IonRow>
-          </IonGrid>
-        )}
-        {complete && (
-          <IonGrid slot="end">
-            <IonRow>
-              <IonCol>
-                <IonText>✅ Done!</IonText>
-              </IonCol>
-              <TimeToStart />
-              <Duration />
-            </IonRow>
-          </IonGrid>
-        )}
-      </IonItem>
-      <IonItemOptions slide="right">
-        {parentId && (
-          <TimerCompleteButton
-            superTimerActive={superTimerActive}
-            active={active}
-            id={id}
-            complete={complete}
-          />
-        )}
-        {!active && (
-          // @TODO: delete sub timer if delete parent
-          <TimerDeleteButton
-            superTimerActive={superTimerActive}
-            active={active}
-            id={id}
-            complete={complete}
-          />
-        )}
-      </IonItemOptions>
+    <>
+      <IonItemSliding>
+        <IonItem>
+          <IonText>
+            {parentId ? '⏱✅' : '⏱'} {name}
+          </IonText>
+          {active && !complete && (
+            <IonGrid slot="end">
+              <IonRow>
+                <IonCol>
+                  <IonGrid>
+                    <IonRow className="ion-justify-content-end">
+                      <IonText>Left</IonText>
+                    </IonRow>
+                    <IonRow className="ion-justify-content-end">
+                      {countdown}
+                    </IonRow>
+                  </IonGrid>
+                </IonCol>
+                <TimeToStart />
+                <Duration />
+              </IonRow>
+            </IonGrid>
+          )}
+          {!active && !complete && (
+            <IonGrid slot="end">
+              <IonRow>
+                <LeftDuration />
+                <TimeToStart />
+                <Duration />
+              </IonRow>
+            </IonGrid>
+          )}
+          {complete && (
+            <IonGrid slot="end">
+              <IonRow>
+                <IonCol>
+                  <IonText>✅ Done!</IonText>
+                </IonCol>
+                <TimeToStart />
+                <Duration />
+              </IonRow>
+            </IonGrid>
+          )}
+        </IonItem>
+        <IonItemOptions slide="right">
+          {parentId && (
+            <TimerCompleteButton
+              superTimerActive={superTimerActive}
+              active={active}
+              id={id}
+              complete={complete}
+            />
+          )}
+          {!active && (
+            // @TODO: delete sub timer if delete parent
+            <TimerDeleteButton
+              superTimerActive={superTimerActive}
+              active={active}
+              id={id}
+              complete={complete}
+            />
+          )}
+        </IonItemOptions>
+      </IonItemSliding>
       <IonProgressBar
         color={value > 0.3 ? 'success' : value > 0.1 ? 'warning' : 'danger'}
         value={value}
       />
-    </IonItemSliding>
+    </>
   );
 };
 
