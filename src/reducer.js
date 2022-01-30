@@ -37,21 +37,6 @@ const calculateStartTime = (endTime, durationInSeconds) => {
 
 const reducer = handleActions(
   {
-    [SUPER_TIMER_STARTED]: (state) => {
-      if (state.timers.length === 0 || state.superTimer.active) {
-        return state;
-      }
-      const elapsedTime =
-        state.superTimer.durationInSeconds -
-        (state.superTimer.currentCount || 0);
-      const { timers } = state;
-      const totalTime = state.superTimer.durationInSeconds;
-      const newTimers = tickTimers(timers, elapsedTime, totalTime);
-      return state
-        .setIn(['superTimer', 'active'], true)
-        .set('timers', newTimers);
-    },
-
     [SUPER_TIMER_TICKED]: (state, { payload }) => {
       if (state.timers.length === 0 || !state.superTimer.active) {
         return state;

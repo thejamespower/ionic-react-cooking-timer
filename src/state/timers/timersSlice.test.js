@@ -3,6 +3,7 @@ import reducer, {
   createTimer,
   deleteTimer,
   completeTimer,
+  startSuperTimer,
   initialState,
 } from './timersSlice';
 
@@ -1031,6 +1032,131 @@ describe('reducer', () => {
               {
                 active: false,
                 complete: true,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:30',
+                timeToStartInSeconds: 30,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+  });
+
+  describe('startSuperTimer', () => {
+    describe('given no timer state', () => {
+      const state = initialState;
+
+      describe('when reducing new state from action', () => {
+        const newState = reducer(state, startSuperTimer());
+
+        it('returns correct state', () => {
+          expect(newState).toEqual(state);
+        });
+      });
+    });
+
+    describe('given inactive and not in progress timer state', () => {
+      const state = TimerState({
+        subTimer: true,
+        active: false,
+        inProgress: false,
+      });
+
+      describe('when reducing new state from action', () => {
+        const newState = reducer(state, startSuperTimer());
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: true,
+              complete: false,
+              currentCount: 120,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 0,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:01:00',
+                timeToStartInSeconds: 60,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: 'subTimer A',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+                offset: '00:01:00',
+                offsetInSeconds: 60,
+              },
+            ],
+          });
+        });
+      });
+    });
+
+    describe('given active and not in progress timer state', () => {
+      const state = TimerState({ active: true, inProgress: false });
+
+      describe('when reducing new state from action', () => {
+        const newState = reducer(state, startSuperTimer());
+
+        it('returns correct state', () => {
+          expect(newState).toEqual(state);
+        });
+      });
+    });
+
+    describe('given active and  in progress timer state', () => {
+      const state = TimerState({ active: true, inProgress: true });
+
+      describe('when reducing new state from action', () => {
+        const newState = reducer(state, startSuperTimer());
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: true,
+              complete: false,
+              currentCount: 90,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 30,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',

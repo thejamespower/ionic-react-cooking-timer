@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import updateTimerOnTick from '../../lib/updateTimerOnTick';
 import { createTimerReducer } from './reducers/createTimerReducer';
 import { createSubTimerReducer } from './reducers/createSubTimerReducer';
 import { deleteTimerReducer } from './reducers/deleteTimerReducer';
 import { completeTimerReducer } from './reducers/completeTimerReducer';
+import { startSuperTimerReducer } from './reducers/startSuperTimerReducer';
 
 export const initialState = {
   timers: [],
@@ -20,9 +20,6 @@ export const initialState = {
   },
 };
 
-const tickTimers = (timers, elapsedTime, totalTime) =>
-  timers.map(updateTimerOnTick(elapsedTime, totalTime));
-
 export const timersSlice = createSlice({
   name: 'timers',
   // `createSlice` will infer the state type from the `initialState` argument
@@ -32,12 +29,18 @@ export const timersSlice = createSlice({
     createSubTimer: createSubTimerReducer,
     deleteTimer: deleteTimerReducer,
     completeTimer: completeTimerReducer,
+    startSuperTimer: startSuperTimerReducer,
   },
 });
 
 // actions
-export const { createTimer, createSubTimer, deleteTimer, completeTimer } =
-  timersSlice.actions;
+export const {
+  createTimer,
+  createSubTimer,
+  deleteTimer,
+  completeTimer,
+  startSuperTimer,
+} = timersSlice.actions;
 
 // selectors
 export const selectTimers = (state) => state.timers.timers;
