@@ -5,6 +5,7 @@ import { createSubTimerReducer } from './reducers/createSubTimerReducer';
 import { deleteTimerReducer } from './reducers/deleteTimerReducer';
 import { completeTimerReducer } from './reducers/completeTimerReducer';
 import { startSuperTimerReducer } from './reducers/startSuperTimerReducer';
+import { tickSuperTimerReducer } from './reducers/tickSuperTimerReducer';
 
 export const initialState = {
   timers: [],
@@ -30,6 +31,7 @@ export const timersSlice = createSlice({
     deleteTimer: deleteTimerReducer,
     completeTimer: completeTimerReducer,
     startSuperTimer: startSuperTimerReducer,
+    tickSuperTimer: tickSuperTimerReducer,
   },
 });
 
@@ -40,6 +42,7 @@ export const {
   deleteTimer,
   completeTimer,
   startSuperTimer,
+  tickSuperTimer,
 } = timersSlice.actions;
 
 // selectors

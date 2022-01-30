@@ -4,6 +4,7 @@ import reducer, {
   deleteTimer,
   completeTimer,
   startSuperTimer,
+  tickSuperTimer,
   initialState,
 } from './timersSlice';
 
@@ -1162,6 +1163,120 @@ describe('reducer', () => {
                 id: '1',
                 timeToStart: '00:00:30',
                 timeToStartInSeconds: 30,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+  });
+
+  describe('tickSuperTimer', () => {
+    describe('given no timer state', () => {
+      const state = initialState;
+
+      describe('when reducing new state from action', () => {
+        const payload = 89;
+        const newState = reducer(state, tickSuperTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual(state);
+        });
+      });
+    });
+
+    describe('given inactive and not in progress timer state', () => {
+      const state = TimerState({ active: false, inProgress: false });
+
+      describe('when reducing new state from action', () => {
+        const payload = 119;
+        const newState = reducer(state, tickSuperTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual(state);
+        });
+      });
+    });
+
+    describe('given active and not in progress timer state', () => {
+      const state = TimerState({ active: true, inProgress: false });
+
+      describe('when reducing new state from action', () => {
+        const payload = 119;
+        const newState = reducer(state, tickSuperTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: true,
+              complete: false,
+              currentCount: 119,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 1,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:59',
+                timeToStartInSeconds: 59,
+              },
+              {
+                active: true,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+
+    describe('given active and in progress timer state', () => {
+      const state = TimerState({ active: true, inProgress: true });
+
+      describe('when reducing new state from action', () => {
+        const payload = 89;
+        const newState = reducer(state, tickSuperTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: true,
+              complete: false,
+              currentCount: 89,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 31,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:29',
+                timeToStartInSeconds: 29,
               },
               {
                 active: true,

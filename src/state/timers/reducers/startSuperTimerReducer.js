@@ -1,6 +1,6 @@
 import updateTimerOnTick from '../../../lib/updateTimerOnTick';
 
-const tickTimers = (timers, elapsedTime, totalTime) =>
+export const tickTimers = (timers, elapsedTime, totalTime) =>
   timers.map(updateTimerOnTick(elapsedTime, totalTime));
 
 export const startSuperTimerReducer = (state) => {
