@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CustomTimeField from '../TimeField';
 import convertSecondsToDuration from '../../lib/convertSecondsToDuration';
@@ -24,7 +24,7 @@ import {
   IonPopover,
   IonFooter,
 } from '@ionic/react';
-import { add, checkmark, close, time } from 'ionicons/icons';
+import { add, checkmark, close as closeIcon, time } from 'ionicons/icons';
 
 const zeroDuration = '00:00:00';
 
@@ -50,33 +50,22 @@ const initialState = USE_DEV_STATE
       name: '',
     };
 
-class TimerCreator extends Component {
-  static propTypes = {
-    createTimer: PropTypes.func.isRequired,
-    createSubTimer: PropTypes.func.isRequired,
-    close: PropTypes.func,
-    isOpen: PropTypes.bool,
+const TimerCreator = ({
+  createTimer,
+  createSubTimer: createSubTimerAction,
+  close,
+  isOpen,
+}) => {
+  const [timer, setTimer] = useState(initialState);
+
+  const changeDuration = (duration) => {
+    setTimer((timer) => ({ ...timer, duration }));
   };
 
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-
-    this.changeDuration = this.changeDuration.bind(this);
-    this.addTimerToSuperTimer = this.addTimerToSuperTimer.bind(this);
-    this.createSubTimer = this.createSubTimer.bind(this);
-    this.changeSubTimerDuration = this.changeSubTimerDuration.bind(this);
-    this.changeSubTimerName = this.changeSubTimerName.bind(this);
-  }
-
-  changeDuration(duration) {
-    this.setState({ duration });
-  }
-
-  changeSubTimerDuration(subTimer, duration) {
-    console.log(subTimer, duration);
-    const { subTimers } = this.state;
-    this.setState({
+  const changeSubTimerDuration = (subTimer, duration) => {
+    const { subTimers } = timer;
+    setTimer((timer) => ({
+      ...timer,
       subTimers: subTimers.map((timer) =>
         timer.id === subTimer.id
           ? {
@@ -85,12 +74,13 @@ class TimerCreator extends Component {
             }
           : timer,
       ),
-    });
-  }
+    }));
+  };
 
-  changeSubTimerName(subTimer, name) {
-    const { subTimers } = this.state;
-    this.setState({
+  const changeSubTimerName = (subTimer, name) => {
+    const { subTimers } = timer;
+    setTimer((timer) => ({
+      ...timer,
       subTimers: subTimers.map((timer) =>
         timer.id === subTimer.id
           ? {
@@ -99,12 +89,11 @@ class TimerCreator extends Component {
             }
           : timer,
       ),
-    });
-  }
+    }));
+  };
 
-  addTimerToSuperTimer() {
-    const { createTimer, createSubTimer } = this.props;
-    const { duration, subTimers, name } = this.state;
+  const addTimerToSuperTimer = () => {
+    const { duration, subTimers, name } = timer;
 
     if (duration === zeroDuration) return;
 
@@ -122,7 +111,7 @@ class TimerCreator extends Component {
         convertDurationToSeconds(subTimer.duration);
       const offset = convertSecondsToDuration(offsetInSeconds);
 
-      return createSubTimer({
+      return createSubTimerAction({
         duration: subTimer.duration,
         id: uuid(),
         parentId,
@@ -131,13 +120,14 @@ class TimerCreator extends Component {
       });
     });
 
-    this.setState(initialState);
-  }
+    setTimer(initialState);
+  };
 
-  createSubTimer() {
-    const { subTimers } = this.state;
+  const createSubTimer = () => {
+    const { subTimers } = timer;
 
-    this.setState({
+    setTimer((timer) => ({
+      ...timer,
       subTimers: [
         ...subTimers,
         {
@@ -147,172 +137,173 @@ class TimerCreator extends Component {
           name: '',
         },
       ],
-    });
-  }
+    }));
+  };
 
-  removeSubTimer(id) {
-    const { subTimers } = this.state;
+  const removeSubTimer = (id) => {
+    const { subTimers } = timer;
 
-    this.setState({
+    setTimer((timer) => ({
+      ...timer,
       subTimers: subTimers.filter((timers) => timers.id !== id),
-    });
-  }
+    }));
+  };
 
-  handleChange(name) {
+  const handleChange = (name) => {
     return (event) => {
-      this.setState({
+      setTimer((timer) => ({
+        ...timer,
         [name]: event.target.value,
-      });
+      }));
     };
-  }
+  };
 
-  render() {
-    const { duration, subTimers, name } = this.state;
-    const { close: onClose, isOpen } = this.props;
+  const { duration, subTimers, name } = timer;
 
-    return (
-      <IonModal isOpen={isOpen}>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Create a timer</IonTitle>
-            <IonButtons slot="end">
+  return (
+    <IonModal isOpen={isOpen}>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Create a timer</IonTitle>
+          <IonButtons slot="end">
+            <IonButton
+              onClick={() => {
+                close();
+              }}
+            >
+              <IonIcon icon={closeIcon} />
+              Close
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent fullscreen>
+        <IonList>
+          <IonItem>
+            <IonLabel>Name</IonLabel>
+            <IonInput
+              placeholder={'chips, chicken'}
+              value={name}
+              onIonChange={handleChange('name')}
+              inputMode="text"
+              required
+            />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Duration</IonLabel>
+            <IonButton fill="clear" id="open-time-input">
+              {duration}
+              <IonIcon icon={time} />
+            </IonButton>
+            {/*<IonPopover trigger="open-time-input" showBackdrop={false}>*/}
+            <CustomTimeField value={duration} onChange={changeDuration} />
+            {/*</IonPopover>*/}
+          </IonItem>
+
+          <IonList>
+            <IonListHeader>
+              <IonText>Sub timers</IonText>
               <IonButton
+                color="secondary"
                 onClick={() => {
-                  onClose();
+                  createSubTimer();
                 }}
               >
-                <IonIcon icon={close} />
-                Close
+                <IonIcon icon={add} />
+                Add sub timer
               </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
+            </IonListHeader>
+            {!!subTimers.length && (
+              <>
+                {subTimers.map((subTimer) => (
+                  <IonCard key={subTimer.id}>
+                    <IonToolbar>
+                      <IonTitle>Sub timer</IonTitle>
+                      <IonButtons slot="end">
+                        <IonButton
+                          onClick={() => {
+                            removeSubTimer(subTimer.id);
+                          }}
+                        >
+                          <IonIcon icon={closeIcon} />
+                          Delete
+                        </IonButton>
+                      </IonButtons>
+                    </IonToolbar>
+                    <IonCardContent>
+                      <IonItem>
+                        <IonLabel>Action</IonLabel>
+                        <IonInput
+                          placeholder={'flip, check, stir'}
+                          value={subTimer.name}
+                          onIonChange={(event) =>
+                            changeSubTimerName(subTimer, event.target.value)
+                          }
+                        />
+                      </IonItem>
 
-        <IonContent fullscreen>
-          <IonList>
-            <IonItem>
-              <IonLabel>Name</IonLabel>
-              <IonInput
-                placeholder={'chips, chicken'}
-                value={name}
-                onIonChange={this.handleChange('name')}
-                inputMode="text"
-                required
-              />
-            </IonItem>
-
-            <IonItem>
-              <IonLabel>Duration</IonLabel>
-              <IonButton fill="clear" id="open-time-input">
-                {duration}
-                <IonIcon icon={time} />
-              </IonButton>
-              {/*<IonPopover trigger="open-time-input" showBackdrop={false}>*/}
-              <CustomTimeField
-                value={duration}
-                onChange={this.changeDuration}
-              />
-              {/*</IonPopover>*/}
-            </IonItem>
-
-            <IonList>
-              <IonListHeader>
-                <IonText>Sub timers</IonText>
-                <IonButton
-                  color="secondary"
-                  onClick={() => {
-                    this.createSubTimer();
-                  }}
-                >
-                  <IonIcon icon={add} />
-                  Add sub timer
-                </IonButton>
-              </IonListHeader>
-              {!!subTimers.length && (
-                <>
-                  {subTimers.map((subTimer) => (
-                    <IonCard key={subTimer.id}>
-                      <IonToolbar>
-                        <IonTitle>Sub timer</IonTitle>
-                        <IonButtons slot="end">
-                          <IonButton
-                            onClick={() => {
-                              this.removeSubTimer(subTimer.id);
-                            }}
-                          >
-                            <IonIcon icon={close} />
-                            Delete
-                          </IonButton>
-                        </IonButtons>
-                      </IonToolbar>
-                      <IonCardContent>
-                        <IonItem>
-                          <IonLabel>Action</IonLabel>
-                          <IonInput
-                            placeholder={'flip, check, stir'}
-                            value={subTimer.name}
-                            onIonChange={(event) =>
-                              this.changeSubTimerName(
-                                subTimer,
-                                event.target.value,
-                              )
+                      <IonItem>
+                        <IonLabel>Duration</IonLabel>
+                        <IonButton
+                          fill="clear"
+                          id={`open-time-input-${subTimer.id}`}
+                        >
+                          {subTimer.duration}
+                          <IonIcon icon={time} />
+                        </IonButton>
+                        <IonPopover
+                          trigger={`open-time-input-${subTimer.id}`}
+                          showBackdrop={false}
+                        >
+                          <CustomTimeField
+                            value={subTimer.duration}
+                            onChange={(value) =>
+                              changeSubTimerDuration(subTimer, value)
                             }
                           />
-                        </IonItem>
-
-                        <IonItem>
-                          <IonLabel>Duration</IonLabel>
-                          <IonButton
-                            fill="clear"
-                            id={`open-time-input-${subTimer.id}`}
-                          >
-                            {subTimer.duration}
-                            <IonIcon icon={time} />
-                          </IonButton>
-                          <IonPopover
-                            trigger={`open-time-input-${subTimer.id}`}
-                            showBackdrop={false}
-                          >
-                            <CustomTimeField
-                              value={subTimer.duration}
-                              onChange={(value) =>
-                                this.changeSubTimerDuration(subTimer, value)
-                              }
-                            />
-                          </IonPopover>
-                        </IonItem>
-                      </IonCardContent>
-                    </IonCard>
-                  ))}
-                </>
-              )}
-            </IonList>
+                        </IonPopover>
+                      </IonItem>
+                    </IonCardContent>
+                  </IonCard>
+                ))}
+              </>
+            )}
           </IonList>
-        </IonContent>
-        <IonFooter>
-          <IonToolbar>
-            <IonButtons slot="end">
-              <IonButton
-                disabled={
-                  // @TODO: validate subTimers
-                  convertDurationToSeconds(duration) === 0 || name?.length === 0
-                }
-                color="primary"
-                onClick={() => {
-                  this.addTimerToSuperTimer();
-                  // @TODO: close on submit
-                  onClose();
-                }}
-              >
-                <IonIcon icon={checkmark} />
-                Create timer
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonFooter>
-      </IonModal>
-    );
-  }
-}
+        </IonList>
+      </IonContent>
+      <IonFooter>
+        <IonToolbar>
+          <IonButtons slot="end">
+            <IonButton
+              disabled={
+                // @TODO: validate subTimers
+                convertDurationToSeconds(duration) === 0 || name?.length === 0
+              }
+              color="primary"
+              onClick={() => {
+                // @TODO: validate
+                addTimerToSuperTimer();
+                // @TODO: close on submit
+                close();
+              }}
+            >
+              <IonIcon icon={checkmark} />
+              Create timer
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonFooter>
+    </IonModal>
+  );
+};
+
+TimerCreator.propTypes = {
+  createTimer: PropTypes.func.isRequired,
+  createSubTimer: PropTypes.func.isRequired,
+  close: PropTypes.func,
+  isOpen: PropTypes.bool,
+};
 
 export default TimerCreator;

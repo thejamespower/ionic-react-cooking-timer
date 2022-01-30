@@ -45,12 +45,10 @@ const Home: React.FC<Props> = ({ timers }) => {
           </IonToolbar>
         </IonHeader>
 
-        {timerCreatorOpen && (
-          <TimerCreator
-            close={() => setTimerCreatorOpen(false)}
-            isOpen={timerCreatorOpen}
-          />
-        )}
+        <TimerCreator
+          close={() => setTimerCreatorOpen(false)}
+          isOpen={timerCreatorOpen}
+        />
 
         <TimerList timers={timers} />
 
