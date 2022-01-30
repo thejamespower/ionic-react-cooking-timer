@@ -1,4 +1,4 @@
-import React, { Component, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
@@ -18,7 +18,7 @@ import {
   IonText,
   IonToolbar,
 } from '@ionic/react';
-import { pause, play, timer } from 'ionicons/icons';
+import { pause, play } from 'ionicons/icons';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import EndTimeSetter from '../EndTimeSetter';
 

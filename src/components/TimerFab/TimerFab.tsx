@@ -1,4 +1,4 @@
-import { IonButton, IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
 
 const TimerFab = (props: { icon: any; handleClick: (e: any) => void }) => (
   <IonFab vertical="bottom" horizontal="end" slot="fixed">

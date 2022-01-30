@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import {
   IonContent,
-  IonFab,
-  IonFabButton,
   IonFooter,
   IonHeader,
-  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import TimerList from '../../components/TimerList';
-import EndTimeSetter from '../../components/EndTimeSetter';
 import SuperTimer from '../../components/SuperTimer';
 import TimerCreator from '../../components/TimerCreator';
 import { add } from 'ionicons/icons';
@@ -49,23 +45,21 @@ const Home: React.FC<Props> = ({ timers }) => {
           </IonToolbar>
         </IonHeader>
 
-        {/*{timerCreatorOpen && (*/}
-        <TimerCreator
-          close={() => setTimerCreatorOpen(false)}
-          isOpen={timerCreatorOpen}
-        />
-        {/*)}*/}
+        {timerCreatorOpen && (
+          <TimerCreator
+            close={() => setTimerCreatorOpen(false)}
+            isOpen={timerCreatorOpen}
+          />
+        )}
 
         <TimerList timers={timers} />
 
         <TimerFab
           icon={add}
-          handleClick={(e) => {
+          handleClick={() => {
             setTimerCreatorOpen(true);
           }}
         />
-
-        {/*<EndTimeSetter />*/}
       </IonContent>
       <IonFooter>
         <SuperTimer />

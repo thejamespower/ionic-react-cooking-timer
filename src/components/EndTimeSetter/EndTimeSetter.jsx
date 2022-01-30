@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
+import { IonButton, IonItem, IonLabel } from '@ionic/react';
 import CustomTimeField from '../TimeField';
 
 const initialState = {

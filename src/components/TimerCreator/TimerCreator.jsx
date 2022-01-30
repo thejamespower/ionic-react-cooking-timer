@@ -9,8 +9,6 @@ import {
   IonModal,
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonIcon,
   IonInput,
   IonItem,
@@ -23,16 +21,10 @@ import {
   IonList,
   IonText,
   IonListHeader,
-  IonGrid,
-  IonCol,
-  IonRow,
   IonPopover,
-  IonDatetime,
-  IonFab,
-  IonFabButton,
   IonFooter,
 } from '@ionic/react';
-import { add, checkmark, checkmarkOutline, close, time } from 'ionicons/icons';
+import { add, checkmark, close, time } from 'ionicons/icons';
 
 const zeroDuration = '00:00:00';
 

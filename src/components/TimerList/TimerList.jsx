@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Timer from '../Timer';
 import { IonList } from '@ionic/react';
 
-function TimerList(props) {
+const TimerList = (props) => {
   const { timers } = props;
   return (
     <IonList>
@@ -15,7 +15,7 @@ function TimerList(props) {
         ))}
     </IonList>
   );
-}
+};
 
 TimerList.propTypes = {
   timers: PropTypes.arrayOf(

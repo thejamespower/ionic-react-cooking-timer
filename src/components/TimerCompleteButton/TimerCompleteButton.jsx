@@ -5,7 +5,6 @@ import { checkmark } from 'ionicons/icons';
 
 const TimerCompleteButton = ({
   active,
-  complete,
   superTimerActive,
   deleteTimer: completeTimer,
   id,

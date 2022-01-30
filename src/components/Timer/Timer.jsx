@@ -1,51 +1,31 @@
-import React, { Component, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import TimerDeleteButton from '../TimerDeleteButton';
 import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonCol,
   IonGrid,
-  IonIcon,
   IonItem,
   IonItemOptions,
   IonItemSliding,
-  IonLabel,
   IonProgressBar,
   IonRow,
   IonText,
   useIonAlert,
 } from '@ionic/react';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
-import { checkmark } from 'ionicons/icons';
 import TimerCompleteButton from '../TimerCompleteButton';
 
-function IronRow(props) {
+function IronRow() {
   return null;
 }
 
 IronRow.propTypes = { children: PropTypes.node };
 const Timer = (props) => {
   const {
-    timer: {
-      name,
-      active,
-      duration,
-      timeToStart,
-      id,
-      complete,
-      parentId,
-      offsetInSeconds,
-    },
-    totalDurationInSeconds,
+    timer: { name, active, duration, timeToStart, id, complete, parentId },
     superTimerActive,
-    type,
-    currentCount,
     elapsedTime,
     completeTimer,
   } = props;
