@@ -163,12 +163,12 @@ const Timer = (props) => {
 Timer.propTypes = {
   timer: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    active: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
     duration: PropTypes.string.isRequired,
     timeToStart: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    finished: PropTypes.string.isRequired,
-    parentId: PropTypes.string.isRequired,
+    finished: PropTypes.bool.isRequired,
+    parentId: PropTypes.string,
   }).isRequired,
 };
 
