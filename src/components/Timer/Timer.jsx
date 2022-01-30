@@ -17,11 +17,6 @@ import {
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import TimerCompleteButton from '../TimerCompleteButton';
 
-function IronRow() {
-  return null;
-}
-
-IronRow.propTypes = { children: PropTypes.node };
 const Timer = (props) => {
   const {
     timer: { name, active, duration, timeToStart, id, complete, parentId },

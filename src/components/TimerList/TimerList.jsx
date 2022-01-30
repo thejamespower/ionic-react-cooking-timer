@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { IonList } from '@ionic/react';
+import { useSelector } from 'react-redux';
 
 import Timer from '../Timer';
-import { IonList } from '@ionic/react';
+import { selectTimers } from '../../state/timers/timersSlice';
 
-const TimerList = (props) => {
-  const { timers } = props;
-  return (
+const TimerList = () => {
+  const [...timers] = useSelector(selectTimers);
+
+  return timers.length ? (
     <IonList>
       {timers
         .sort((a, b) => a.timeToStartInSeconds - b.timeToStartInSeconds)
@@ -14,7 +17,7 @@ const TimerList = (props) => {
           <Timer key={timer.id} timer={timer} />
         ))}
     </IonList>
-  );
+  ) : null;
 };
 
 TimerList.propTypes = {

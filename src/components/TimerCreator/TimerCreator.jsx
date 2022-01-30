@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import CustomTimeField from '../TimeField';
-import convertSecondsToDuration from '../../lib/convertSecondsToDuration';
-import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import { v4 as uuid } from 'uuid';
 import {
   IonButton,
@@ -25,11 +22,17 @@ import {
   IonFooter,
 } from '@ionic/react';
 import { add, checkmark, close as closeIcon, time } from 'ionicons/icons';
+import { useDispatch } from 'react-redux';
+import CustomTimeField from '../TimeField';
+import convertSecondsToDuration from '../../lib/convertSecondsToDuration';
+import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
+import {
+  createTimer as createTimerAction,
+  createSubTimer as createSubTimerAction,
+} from '../../state/timers/timersSlice';
 
 const zeroDuration = '00:00:00';
-
 const USE_DEV_STATE = true;
-
 const initialState = USE_DEV_STATE
   ? {
       duration: '00:02:00',
@@ -50,20 +53,16 @@ const initialState = USE_DEV_STATE
       name: '',
     };
 
-const TimerCreator = ({
-  createTimer,
-  createSubTimer: createSubTimerAction,
-  close,
-  isOpen,
-}) => {
-  const [timer, setTimer] = useState(initialState);
+const TimerCreator = ({ close, isOpen }) => {
+  const dispatch = useDispatch();
+
+  const [{ duration, name, subTimers }, setTimer] = useState(initialState);
 
   const changeDuration = (duration) => {
     setTimer((timer) => ({ ...timer, duration }));
   };
 
   const changeSubTimerDuration = (subTimer, duration) => {
-    const { subTimers } = timer;
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.map((timer) =>
@@ -78,7 +77,6 @@ const TimerCreator = ({
   };
 
   const changeSubTimerName = (subTimer, name) => {
-    const { subTimers } = timer;
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.map((timer) =>
@@ -93,17 +91,17 @@ const TimerCreator = ({
   };
 
   const addTimerToSuperTimer = () => {
-    const { duration, subTimers, name } = timer;
-
     if (duration === zeroDuration) return;
 
     const parentId = uuid();
 
-    createTimer({
-      duration,
-      id: parentId,
-      name,
-    });
+    dispatch(
+      createTimerAction({
+        duration,
+        id: parentId,
+        name,
+      }),
+    );
 
     subTimers.map((subTimer) => {
       const offsetInSeconds =
@@ -111,21 +109,21 @@ const TimerCreator = ({
         convertDurationToSeconds(subTimer.duration);
       const offset = convertSecondsToDuration(offsetInSeconds);
 
-      return createSubTimerAction({
-        duration: subTimer.duration,
-        id: uuid(),
-        parentId,
-        name: `${subTimer.name} ${name}`,
-        offset,
-      });
+      return dispatch(
+        createSubTimerAction({
+          duration: subTimer.duration,
+          id: uuid(),
+          parentId,
+          name: `${subTimer.name} ${name}`,
+          offset,
+        }),
+      );
     });
 
     setTimer(initialState);
   };
 
   const createSubTimer = () => {
-    const { subTimers } = timer;
-
     setTimer((timer) => ({
       ...timer,
       subTimers: [
@@ -141,8 +139,6 @@ const TimerCreator = ({
   };
 
   const removeSubTimer = (id) => {
-    const { subTimers } = timer;
-
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.filter((timers) => timers.id !== id),
@@ -157,8 +153,6 @@ const TimerCreator = ({
       }));
     };
   };
-
-  const { duration, subTimers, name } = timer;
 
   return (
     <IonModal isOpen={isOpen}>
@@ -300,8 +294,6 @@ const TimerCreator = ({
 };
 
 TimerCreator.propTypes = {
-  createTimer: PropTypes.func.isRequired,
-  createSubTimer: PropTypes.func.isRequired,
   close: PropTypes.func,
   isOpen: PropTypes.bool,
 };

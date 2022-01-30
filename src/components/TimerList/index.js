@@ -1,3 +1,3 @@
-import TimerList from './container';
+import TimerList from './TimerList';
 
 export default TimerList;
