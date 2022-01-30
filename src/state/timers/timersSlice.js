@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createTimerReducer } from './reducers/createTimerReducer';
 import { createSubTimerReducer } from './reducers/createSubTimerReducer';
 import { deleteTimerReducer } from './reducers/deleteTimerReducer';
-import { completeTimerReducer } from './reducers/completeTimerReducer';
+import { finishTimerReducer } from './reducers/finishTimerReducer';
 import { startSuperTimerReducer } from './reducers/startSuperTimerReducer';
 import { tickSuperTimerReducer } from './reducers/tickSuperTimerReducer';
 import { setEndTimeReducer } from './reducers/setEndTimeReducer';
-import { completeSuperTimerReducer } from './reducers/completeSuperTimerReducer';
+import { finishSuperTimerReducer } from './reducers/finishSuperTimerReducer';
 
 export const initialState = {
   timers: [],
@@ -19,7 +19,7 @@ export const initialState = {
     active: false,
     currentCount: null,
     elapsedTime: 0,
-    complete: false,
+    finished: false,
   },
 };
 
@@ -31,11 +31,11 @@ export const timersSlice = createSlice({
     createTimer: createTimerReducer,
     createSubTimer: createSubTimerReducer,
     deleteTimer: deleteTimerReducer,
-    completeTimer: completeTimerReducer,
+    finishTimer: finishTimerReducer,
     startSuperTimer: startSuperTimerReducer,
     tickSuperTimer: tickSuperTimerReducer,
     setEndTime: setEndTimeReducer,
-    completeSuperTimer: completeSuperTimerReducer,
+    finishSuperTimer: finishSuperTimerReducer,
   },
 });
 
@@ -44,11 +44,11 @@ export const {
   createTimer,
   createSubTimer,
   deleteTimer,
-  completeTimer,
+  finishTimer,
   startSuperTimer,
   tickSuperTimer,
   setEndTime,
-  completeSuperTimer,
+  finishSuperTimer,
 } = timersSlice.actions;
 
 // selectors

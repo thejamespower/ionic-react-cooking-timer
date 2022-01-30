@@ -23,7 +23,7 @@ export const createTimerReducer = (state, { payload }) => {
     id: payload.id || uuid(),
     durationInSeconds: convertDurationToSeconds(payload.duration),
     active: false,
-    complete: false,
+    finished: false,
   };
 
   // Add new timers to list

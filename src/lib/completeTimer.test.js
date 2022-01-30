@@ -1,20 +1,20 @@
-import completeTimer from './completeTimer';
+import finishTimer from './finishTimer';
 
-describe('completeTimer', () => {
+describe('finishTimer', () => {
   describe('given timer', () => {
     const timer = {
       id: '1',
       active: true,
-      complete: false,
+      finished: false,
     };
 
     describe('when id equals timer.id', () => {
       const id = '1';
 
-      it('completes timer', () => {
-        expect(completeTimer(id)(timer)).toEqual({
+      it('finishes timer', () => {
+        expect(finishTimer(id)(timer)).toEqual({
           active: false,
-          complete: true,
+          finished: true,
           id: '1',
         });
       });
@@ -24,9 +24,9 @@ describe('completeTimer', () => {
       const id = '2';
 
       it('returns timer', () => {
-        expect(completeTimer(id)(timer)).toEqual({
+        expect(finishTimer(id)(timer)).toEqual({
           active: true,
-          complete: false,
+          finished: false,
           id: '1',
         });
       });

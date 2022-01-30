@@ -2,12 +2,12 @@ import reducer, {
   createSubTimer,
   createTimer,
   deleteTimer,
-  completeTimer,
+  finishTimer,
   startSuperTimer,
   tickSuperTimer,
   setEndTime,
   initialState,
-  completeSuperTimer,
+  finishSuperTimer,
 } from './timersSlice';
 
 const TimerState = ({
@@ -19,7 +19,7 @@ const TimerState = ({
   superTimer: {
     endTime,
     active,
-    complete: false,
+    finished: false,
     currentCount: inProgress ? 90 : 120,
     duration: '00:02:00',
     durationInSeconds: 120,
@@ -28,7 +28,7 @@ const TimerState = ({
   timers: [
     {
       active: false,
-      complete: false,
+      finished: false,
       duration: '00:01:00',
       durationInSeconds: 60,
       id: '1',
@@ -37,7 +37,7 @@ const TimerState = ({
     },
     {
       active,
-      complete: false,
+      finished: false,
       duration: '00:02:00',
       durationInSeconds: 120,
       id: '2',
@@ -48,7 +48,7 @@ const TimerState = ({
       ? [
           {
             active: false,
-            complete: false,
+            finished: false,
             offset: '00:01:00',
             offsetInSeconds: 60,
             duration: '00:01:00',
@@ -69,7 +69,7 @@ describe('reducer', () => {
         endTime: null,
         startTime: null,
         active: false,
-        complete: false,
+        finished: false,
         currentCount: null,
         duration: '00:00:00',
         durationInSeconds: 0,
@@ -106,7 +106,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 60,
               duration: '00:01:00',
               durationInSeconds: 60,
@@ -117,7 +117,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -170,7 +170,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 120,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -179,7 +179,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -188,7 +188,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -197,7 +197,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -228,7 +228,7 @@ describe('reducer', () => {
               endTime: '10:00:00',
               startTime: '08:00:00',
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 7200,
               duration: '02:00:00',
               durationInSeconds: 7200,
@@ -237,7 +237,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -246,7 +246,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -255,7 +255,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '02:00:00',
                 durationInSeconds: 7200,
                 id: '2hr',
@@ -282,7 +282,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -292,7 +292,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -301,7 +301,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -310,7 +310,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: 'subTimer A',
@@ -336,7 +336,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -346,7 +346,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -355,7 +355,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -364,7 +364,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: 'subTimer A',
@@ -390,7 +390,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 180,
               duration: '00:03:00',
               durationInSeconds: 180,
@@ -399,7 +399,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -408,7 +408,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -417,7 +417,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: 'subTimer A',
@@ -428,7 +428,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:03:00',
                 durationInSeconds: 180,
                 id: '3',
@@ -456,7 +456,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -466,7 +466,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -475,7 +475,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -498,7 +498,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -508,7 +508,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -517,7 +517,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -590,7 +590,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -600,7 +600,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -609,7 +609,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -618,7 +618,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:00:00',
                 durationInSeconds: 0,
                 id: '1',
@@ -646,7 +646,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -656,7 +656,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -665,7 +665,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -674,7 +674,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -700,7 +700,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -710,7 +710,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -719,7 +719,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -747,7 +747,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -757,7 +757,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -766,7 +766,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -790,7 +790,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -800,7 +800,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -809,7 +809,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -832,7 +832,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -842,7 +842,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -851,7 +851,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -890,7 +890,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -900,7 +900,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -909,7 +909,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -933,7 +933,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -942,7 +942,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -956,13 +956,13 @@ describe('reducer', () => {
     });
   });
 
-  describe('completeTimer', () => {
+  describe('finishTimer', () => {
     describe('given no timer state', () => {
       const state = initialState;
 
       describe('when reducing new state from action with id given', () => {
         const payload = '1';
-        const newState = reducer(state, completeTimer(payload));
+        const newState = reducer(state, finishTimer(payload));
 
         it('returns correct state', () => {
           expect(newState).toEqual(state);
@@ -975,13 +975,13 @@ describe('reducer', () => {
 
       describe('when reducing new state from action with id given', () => {
         const payload = '1';
-        const newState = reducer(state, completeTimer(payload));
+        const newState = reducer(state, finishTimer(payload));
 
         it('returns correct state', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -991,7 +991,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: true,
+                finished: true,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1000,7 +1000,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1018,13 +1018,13 @@ describe('reducer', () => {
 
       describe('when reducing new state from action with id given', () => {
         const payload = '1';
-        const newState = reducer(state, completeTimer(payload));
+        const newState = reducer(state, finishTimer(payload));
 
         it('returns correct state', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1034,7 +1034,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: true,
+                finished: true,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1043,7 +1043,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1084,7 +1084,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 120,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1094,7 +1094,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1103,7 +1103,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1112,7 +1112,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: 'subTimer A',
@@ -1149,7 +1149,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1159,7 +1159,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1168,7 +1168,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1220,7 +1220,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 119,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1230,7 +1230,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1239,7 +1239,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1263,7 +1263,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: true,
-              complete: false,
+              finished: false,
               currentCount: 89,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1273,7 +1273,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1282,7 +1282,7 @@ describe('reducer', () => {
               },
               {
                 active: true,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1308,7 +1308,7 @@ describe('reducer', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: false,
+              finished: false,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1319,7 +1319,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1328,7 +1328,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',
@@ -1342,18 +1342,18 @@ describe('reducer', () => {
     });
   });
 
-  describe('completeSuperTimer', () => {
+  describe('finishSuperTimer', () => {
     describe('given timer state', () => {
       const state = TimerState();
 
       describe('when reducing new state from action', () => {
-        const newState = reducer(state, completeSuperTimer());
+        const newState = reducer(state, finishSuperTimer());
 
         it('returns correct state', () => {
           expect(newState).toEqual({
             superTimer: {
               active: false,
-              complete: true,
+              finished: true,
               currentCount: 90,
               duration: '00:02:00',
               durationInSeconds: 120,
@@ -1363,7 +1363,7 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:01:00',
                 durationInSeconds: 60,
                 id: '1',
@@ -1372,7 +1372,7 @@ describe('reducer', () => {
               },
               {
                 active: false,
-                complete: false,
+                finished: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,
                 id: '2',

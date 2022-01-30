@@ -18,20 +18,20 @@ import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import TimerCompleteButton from '../TimerCompleteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  completeTimer,
+  finishTimer,
   superTimerSelector,
 } from '../../state/timers/timersSlice';
 
 const Timer = (props) => {
   const {
-    timer: { name, active, duration, timeToStart, id, complete, parentId },
+    timer: { name, active, duration, timeToStart, id, finished, parentId },
   } = props;
 
   const dispatch = useDispatch();
   const { active: superTimerActive, elapsedTime } =
     useSelector(superTimerSelector);
 
-  const value = complete
+  const value = finished
     ? 0
     : active
     ? (convertDurationToSeconds(duration) - elapsedTime) /
@@ -45,7 +45,7 @@ const Timer = (props) => {
       <Countdown
         date={moment().add(moment.duration(duration)).toDate()}
         onComplete={async () => {
-          dispatch(completeTimer(id));
+          dispatch(finishTimer(id));
           await present({
             cssClass: 'my-css',
             header: parentId ? 'Action required!' : 'Timer finished!',
@@ -106,7 +106,7 @@ const Timer = (props) => {
           <IonText>
             {parentId ? '⏱✅' : '⏱'} {name}
           </IonText>
-          {active && !complete && (
+          {active && !finished && (
             <IonGrid slot="end">
               <IonRow>
                 <IonCol>
@@ -124,7 +124,7 @@ const Timer = (props) => {
               </IonRow>
             </IonGrid>
           )}
-          {!active && !complete && (
+          {!active && !finished && (
             <IonGrid slot="end">
               <IonRow>
                 <LeftDuration />
@@ -133,7 +133,7 @@ const Timer = (props) => {
               </IonRow>
             </IonGrid>
           )}
-          {complete && (
+          {finished && (
             <IonGrid slot="end">
               <IonRow>
                 <IonCol>
@@ -146,8 +146,8 @@ const Timer = (props) => {
           )}
         </IonItem>
         <IonItemOptions slide="right">
-          {parentId && complete && active && <TimerCompleteButton id={id} />}
-          {!active && !complete && !superTimerActive && (
+          {parentId && finished && active && <TimerCompleteButton id={id} />}
+          {!active && !finished && !superTimerActive && (
             <TimerDeleteButton id={id} />
           )}
         </IonItemOptions>

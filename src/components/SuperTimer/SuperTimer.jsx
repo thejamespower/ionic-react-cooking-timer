@@ -26,14 +26,14 @@ import {
   superTimerSelector,
   startSuperTimer,
   tickSuperTimer,
-  completeSuperTimer,
+  finishSuperTimer,
 } from '../../state/timers/timersSlice';
 
 const SuperTimer = (props) => {
   const superTimer = useSelector(superTimerSelector);
   const dispatch = useDispatch();
 
-  const { duration, active, complete, endTime, startTime, elapsedTime } =
+  const { duration, active, finished, endTime, startTime, elapsedTime } =
     superTimer;
 
   const handleSubmitClick = () => {
@@ -47,7 +47,7 @@ const SuperTimer = (props) => {
 
   const handleComplete = () => {
     dispatch(tickSuperTimer(0));
-    dispatch(completeSuperTimer());
+    dispatch(finishSuperTimer());
   };
 
   const countdown = useMemo(
@@ -62,7 +62,7 @@ const SuperTimer = (props) => {
     [duration, active, endTime, startTime],
   );
 
-  const value = complete
+  const value = finished
     ? 0
     : active
     ? (convertDurationToSeconds(duration) - elapsedTime) /
@@ -83,7 +83,7 @@ const SuperTimer = (props) => {
 
         <EndTimeSetter />
 
-        {complete && (
+        {finished && (
           <IonItem>
             <IonText>All done!</IonText>
           </IonItem>

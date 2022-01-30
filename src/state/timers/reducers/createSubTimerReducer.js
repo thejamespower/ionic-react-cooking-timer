@@ -10,7 +10,7 @@ export const createSubTimerReducer = (state, { payload }) => {
     ...payload,
     id: payload.id || uuid(),
     active: false,
-    complete: false,
+    finished: false,
     durationInSeconds: convertDurationToSeconds(payload.duration),
     offsetInSeconds: convertDurationToSeconds(payload.offset),
     timeToStart: '00:00:00',
