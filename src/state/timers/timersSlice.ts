@@ -20,9 +20,20 @@ export interface Timer {
   finished: boolean;
 }
 
+export interface TimerWithTimeToStart extends Timer {
+  timeToStart: Duration;
+  timeToStartInSeconds: number;
+}
+
 export interface SubTimer extends Timer {
   parentId: string;
+  offsetInSeconds: number;
+  offset: Duration;
 }
+
+export interface SubTimerWithTimeToStart
+  extends SubTimer,
+    TimerWithTimeToStart {}
 
 export interface SuperTimer {
   endTime: Duration | null;

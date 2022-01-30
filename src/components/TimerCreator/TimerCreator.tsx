@@ -38,7 +38,12 @@ interface TimerCreatorTimer
   extends Omit<Timer, 'durationInSeconds' | 'active' | 'finished'> {
   subTimers: Omit<
     SubTimer,
-    'durationInSeconds' | 'active' | 'finished' | 'parentId'
+    | 'durationInSeconds'
+    | 'active'
+    | 'finished'
+    | 'offset'
+    | 'offsetInSeconds'
+    | 'parentId'
   >[];
 }
 
