@@ -7,14 +7,15 @@ import reducer, {
   tickSuperTimer,
   setEndTime,
   initialState,
+  completeSuperTimer,
 } from './timersSlice';
 
 const TimerState = ({
-  active,
+  active = false,
   inProgress = true,
   subTimer = null,
   endTime,
-}) => ({
+} = {}) => ({
   superTimer: {
     endTime,
     active,
@@ -1314,6 +1315,50 @@ describe('reducer', () => {
               elapsedTime: 30,
               endTime: '11:00:00',
               startTime: '10:58:00',
+            },
+            timers: [
+              {
+                active: false,
+                complete: false,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:30',
+                timeToStartInSeconds: 30,
+              },
+              {
+                active: false,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+  });
+
+  describe('completeSuperTimer', () => {
+    describe('given timer state', () => {
+      const state = TimerState();
+
+      describe('when reducing new state from action', () => {
+        const newState = reducer(state, completeSuperTimer());
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: false,
+              complete: true,
+              currentCount: 90,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 30,
+              endTime: undefined,
             },
             timers: [
               {
