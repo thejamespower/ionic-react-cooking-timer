@@ -3,13 +3,24 @@ import convertDurationToSeconds from '../../../lib/convertDurationToSeconds';
 import getTotalDurationInSeconds from '../../../lib/getTotalDurationInSeconds';
 import convertSecondsToDuration from '../../../lib/convertSecondsToDuration';
 import setTimerStart from '../../../lib/setTimerStart';
+import { Duration } from '../../../components/TimeField/TimeField';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-const calculateStartTime = (endTime, durationInSeconds) => {
+const calculateStartTime = (endTime: Duration, durationInSeconds: number) => {
   return convertSecondsToDuration(
     convertDurationToSeconds(endTime) - durationInSeconds,
   );
 };
-export const createTimerReducer = (state, { payload }) => {
+export const createTimerReducer = (
+  state: any,
+  {
+    payload,
+  }: PayloadAction<{
+    duration: Duration;
+    id: string;
+    name: string;
+  }>,
+) => {
   if (
     payload.duration === '00:00:00' ||
     state.superTimer.active ||
