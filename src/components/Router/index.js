@@ -1,3 +1,3 @@
-import Router from './container';
+import Router from './Router';
 
 export default Router;

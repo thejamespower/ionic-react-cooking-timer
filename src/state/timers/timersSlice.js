@@ -53,6 +53,7 @@ export const {
 
 // selectors
 export const selectTimers = (state) => state.timers.timers;
+export const superTimerSelector = (state) => state.timers.superTimer;
 
 // reducer
 export default timersSlice.reducer;

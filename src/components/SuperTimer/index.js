@@ -1,3 +1,3 @@
-import Timer from './container';
+import SuperTimer from './SuperTimer';
 
-export default Timer;
+export default SuperTimer;

@@ -16,14 +16,20 @@ import {
 } from '@ionic/react';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import TimerCompleteButton from '../TimerCompleteButton';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  completeTimer,
+  superTimerSelector,
+} from '../../state/timers/timersSlice';
 
 const Timer = (props) => {
   const {
     timer: { name, active, duration, timeToStart, id, complete, parentId },
-    superTimerActive,
-    elapsedTime,
-    completeTimer,
   } = props;
+
+  const dispatch = useDispatch();
+  const { active: superTimerActive, elapsedTime } =
+    useSelector(superTimerSelector);
 
   const value = complete
     ? 0
@@ -39,7 +45,7 @@ const Timer = (props) => {
       <Countdown
         date={moment().add(moment.duration(duration)).toDate()}
         onComplete={async () => {
-          completeTimer(id);
+          dispatch(completeTimer(id));
           await present({
             cssClass: 'my-css',
             header: parentId ? 'Action required!' : 'Timer finished!',

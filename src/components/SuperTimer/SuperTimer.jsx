@@ -21,25 +21,33 @@ import {
 import { pause, play } from 'ionicons/icons';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import EndTimeSetter from '../EndTimeSetter';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  superTimerSelector,
+  startSuperTimer,
+  tickSuperTimer,
+  completeSuperTimer,
+} from '../../state/timers/timersSlice';
 
 const SuperTimer = (props) => {
-  const { superTimer, startSuperTimer, tickSuperTimer, completeSuperTimer } =
-    props;
+  const superTimer = useSelector(superTimerSelector);
+  const dispatch = useDispatch();
+
   const { duration, active, complete, endTime, startTime, elapsedTime } =
     superTimer;
 
   const handleSubmitClick = () => {
     if (duration === '00:00:00') return;
-    startSuperTimer();
+    dispatch(startSuperTimer());
   };
 
   const handleTick = ({ total }) => {
-    tickSuperTimer(total / 1000);
+    dispatch(tickSuperTimer(total / 1000));
   };
 
   const handleComplete = () => {
-    tickSuperTimer(0);
-    completeSuperTimer();
+    dispatch(tickSuperTimer(0));
+    dispatch(completeSuperTimer());
   };
 
   const countdown = useMemo(
@@ -122,19 +130,6 @@ const SuperTimer = (props) => {
   );
 };
 
-SuperTimer.propTypes = {
-  superTimer: PropTypes.shape({
-    duration: PropTypes.string.isRequired,
-    durationInSeconds: PropTypes.number.isRequired,
-    active: PropTypes.bool.isRequired,
-    complete: PropTypes.bool.isRequired,
-    currentCount: PropTypes.number,
-    endTime: PropTypes.string,
-    startTime: PropTypes.string,
-  }).isRequired,
-  startSuperTimer: PropTypes.func.isRequired,
-  tickSuperTimer: PropTypes.func.isRequired,
-  completeSuperTimer: PropTypes.func.isRequired,
-};
+SuperTimer.propTypes = {};
 
 export default SuperTimer;
