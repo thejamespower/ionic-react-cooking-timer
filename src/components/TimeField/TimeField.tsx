@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TimeField from 'react-simple-timefield';
 
-export default function CustomTimeField(props) {
+export type Duration = string;
+
+export default function CustomTimeField(props: {
+  onChange: (time: Duration) => void;
+  value: Duration;
+}) {
   const { onChange, value } = props;
   new Date(Date.parse(`01 Jan 1970 ${value} GMT`)).toISOString();
-
-  // console.log(value, renderValue);
 
   return (
     <>

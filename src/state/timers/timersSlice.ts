@@ -8,8 +8,39 @@ import { startSuperTimerReducer } from './reducers/startSuperTimerReducer';
 import { tickSuperTimerReducer } from './reducers/tickSuperTimerReducer';
 import { setEndTimeReducer } from './reducers/setEndTimeReducer';
 import { finishSuperTimerReducer } from './reducers/finishSuperTimerReducer';
+import { Duration } from '../../components/TimeField/TimeField';
+import { RootState } from '../../store';
 
-export const initialState = {
+export interface Timer {
+  name: string;
+  id: string;
+  duration: Duration;
+  durationInSeconds: number;
+  active: boolean;
+  finished: boolean;
+}
+
+export interface SubTimer extends Timer {
+  parentId: string;
+}
+
+export interface SuperTimer {
+  endTime: Duration | null;
+  startTime: Duration | null;
+  duration: Duration;
+  durationInSeconds: number;
+  active: boolean;
+  currentCount: number | null;
+  elapsedTime: number;
+  finished: boolean;
+}
+
+export interface TimerState {
+  timers: Timer[];
+  superTimer: SuperTimer;
+}
+
+export const initialState: TimerState = {
   timers: [],
   superTimer: {
     endTime: null,
@@ -52,8 +83,8 @@ export const {
 } = timersSlice.actions;
 
 // selectors
-export const selectTimers = (state) => state.timers.timers;
-export const superTimerSelector = (state) => state.timers.superTimer;
+export const selectTimers = (state: RootState) => state.timers.timers;
+export const superTimerSelector = (state: RootState) => state.timers.superTimer;
 
 // reducer
 export default timersSlice.reducer;

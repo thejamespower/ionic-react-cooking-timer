@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import {
@@ -20,45 +20,47 @@ import {
 import { pause, play } from 'ionicons/icons';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import EndTimeSetter from '../EndTimeSetter';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   superTimerSelector,
   startSuperTimer,
   tickSuperTimer,
   finishSuperTimer,
 } from '../../state/timers/timersSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const SuperTimer = () => {
-  const superTimer = useSelector(superTimerSelector);
-  const dispatch = useDispatch();
+  const superTimer = useAppSelector(superTimerSelector);
+  const dispatch = useAppDispatch();
 
-  const { duration, active, finished, endTime, startTime, elapsedTime } =
-    superTimer;
+  const { duration, active, finished, startTime, elapsedTime } = superTimer;
 
   const handleSubmitClick = () => {
     if (duration === '00:00:00') return;
     dispatch(startSuperTimer());
   };
 
-  const handleTick = ({ total }) => {
-    dispatch(tickSuperTimer(total / 1000));
-  };
+  const handleTick = useCallback(
+    ({ total }) => {
+      dispatch(tickSuperTimer(total / 1000));
+    },
+    [dispatch],
+  );
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     dispatch(tickSuperTimer(0));
     dispatch(finishSuperTimer());
-  };
+  }, [dispatch]);
 
   const countdown = useMemo(
     () => (
       <Countdown
         date={moment().add(moment.duration(duration)).toDate()}
-        dayInHours
+        daysInHours
         onTick={handleTick}
         onComplete={handleComplete}
       />
     ),
-    [duration, active, endTime, startTime],
+    [duration, handleTick, handleComplete],
   );
 
   const value = finished

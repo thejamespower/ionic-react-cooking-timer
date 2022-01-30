@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IonIcon, IonItemOption } from '@ionic/react';
 import { trash } from 'ionicons/icons';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks';
 import { deleteTimer } from '../../state/timers/timersSlice';
 
-const TimerDeleteButton = ({ id }) => {
-  const dispatch = useDispatch();
+const TimerDeleteButton = ({ id }: { id: string }) => {
+  const dispatch = useAppDispatch();
 
   return (
     <IonItemOption onClick={() => dispatch(deleteTimer(id))} color="danger">
