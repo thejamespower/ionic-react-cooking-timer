@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import Countdown from 'react-countdown-now';
 import moment from 'moment';
 import {
@@ -29,7 +28,7 @@ import {
   finishSuperTimer,
 } from '../../state/timers/timersSlice';
 
-const SuperTimer = (props) => {
+const SuperTimer = () => {
   const superTimer = useSelector(superTimerSelector);
   const dispatch = useDispatch();
 
@@ -137,7 +136,5 @@ const SuperTimer = (props) => {
     </IonCard>
   );
 };
-
-SuperTimer.propTypes = {};
 
 export default SuperTimer;
