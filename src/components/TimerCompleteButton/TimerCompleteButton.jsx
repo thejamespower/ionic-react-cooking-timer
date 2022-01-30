@@ -5,10 +5,10 @@ import { checkmark } from 'ionicons/icons';
 import { deleteTimer } from '../../state/timers/timersSlice';
 import { useDispatch } from 'react-redux';
 
-const TimerCompleteButton = ({ active, superTimerActive, id }) => {
+const TimerCompleteButton = ({ hide = false, id }) => {
   const dispatch = useDispatch();
 
-  return !active || !superTimerActive ? null : (
+  return hide ? null : (
     <IonItemOption onClick={() => dispatch(deleteTimer(id))} color="success">
       <IonIcon icon={checkmark} slot="icon-only" />
     </IonItemOption>
@@ -16,9 +16,7 @@ const TimerCompleteButton = ({ active, superTimerActive, id }) => {
 };
 
 TimerCompleteButton.propTypes = {
-  active: PropTypes.bool.isRequired,
-  complete: PropTypes.bool.isRequired,
-  superTimerActive: PropTypes.bool.isRequired,
+  hide: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 
