@@ -69,6 +69,33 @@ const SuperTimer = (props) => {
       convertDurationToSeconds(duration)
     : 1;
 
+  const startButton = (
+    <IonButton
+      disabled={active || duration === '00:00:00'}
+      color="success"
+      type="submit"
+      onClick={() => {
+        handleSubmitClick();
+      }}
+    >
+      <IonIcon icon={play} slot="icon-only">
+        Start
+      </IonIcon>
+    </IonButton>
+  );
+
+  const pauseButton = (
+    <IonButton
+      disabled={!active || duration === '00:00:00'}
+      color="warning"
+      onClick={() => {}}
+    >
+      <IonIcon icon={pause} slot="icon-only">
+        Pause
+      </IonIcon>
+    </IonButton>
+  );
+
   return (
     <IonCard>
       <IonCardHeader>
@@ -93,29 +120,10 @@ const SuperTimer = (props) => {
           <IonToolbar>
             <IonRow className="ion-justify-content-center">
               <IonButtons>
-                <IonButton
-                  disabled={!active || duration === '00:00:00'}
-                  color="warning"
-                  onClick={() => {}}
-                >
-                  <IonIcon icon={pause} slot="icon-only">
-                    Pause
-                  </IonIcon>
-                </IonButton>
+                {pauseButton}
                 {active && <IonItem>{countdown}</IonItem>}
                 {!active && <IonText>{duration}</IonText>}
-                <IonButton
-                  disabled={active || duration === '00:00:00'}
-                  color="success"
-                  type="submit"
-                  onClick={() => {
-                    handleSubmitClick();
-                  }}
-                >
-                  <IonIcon icon={play} slot="icon-only">
-                    Start
-                  </IonIcon>
-                </IonButton>
+                {startButton}
               </IonButtons>
             </IonRow>
           </IonToolbar>
