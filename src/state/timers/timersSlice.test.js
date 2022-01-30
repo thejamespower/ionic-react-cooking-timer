@@ -2,6 +2,7 @@ import reducer, {
   createSubTimer,
   createTimer,
   deleteTimer,
+  completeTimer,
   initialState,
 } from './timersSlice';
 
@@ -937,6 +938,107 @@ describe('reducer', () => {
             timers: [
               {
                 active: false,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+  });
+
+  describe('completeTimer', () => {
+    describe('given no timer state', () => {
+      const state = initialState;
+
+      describe('when reducing new state from action with id given', () => {
+        const payload = '1';
+        const newState = reducer(state, completeTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual(state);
+        });
+      });
+    });
+
+    describe('given inactive timer state', () => {
+      const state = TimerState({ active: false });
+
+      describe('when reducing new state from action with id given', () => {
+        const payload = '1';
+        const newState = reducer(state, completeTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: false,
+              complete: false,
+              currentCount: 90,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 30,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: true,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:30',
+                timeToStartInSeconds: 30,
+              },
+              {
+                active: false,
+                complete: false,
+                duration: '00:02:00',
+                durationInSeconds: 120,
+                id: '2',
+                timeToStart: '00:00:00',
+                timeToStartInSeconds: 0,
+              },
+            ],
+          });
+        });
+      });
+    });
+
+    describe('given active timer state', () => {
+      const state = TimerState({ active: true });
+
+      describe('when reducing new state from action with id given', () => {
+        const payload = '1';
+        const newState = reducer(state, completeTimer(payload));
+
+        it('returns correct state', () => {
+          expect(newState).toEqual({
+            superTimer: {
+              active: true,
+              complete: false,
+              currentCount: 90,
+              duration: '00:02:00',
+              durationInSeconds: 120,
+              elapsedTime: 30,
+              endTime: undefined,
+            },
+            timers: [
+              {
+                active: false,
+                complete: true,
+                duration: '00:01:00',
+                durationInSeconds: 60,
+                id: '1',
+                timeToStart: '00:00:30',
+                timeToStartInSeconds: 30,
+              },
+              {
+                active: true,
                 complete: false,
                 duration: '00:02:00',
                 durationInSeconds: 120,

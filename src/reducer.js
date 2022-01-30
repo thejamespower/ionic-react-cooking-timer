@@ -5,15 +5,10 @@ import {
   SUPER_TIMER_COMPLETED,
   SUPER_TIMER_STARTED,
   SUPER_TIMER_TICKED,
-  TIMER_COMPLETED,
-  TIMER_DELETED,
 } from './action-types';
 import convertDurationToSeconds from './lib/convertDurationToSeconds';
 import convertSecondsToDuration from './lib/convertSecondsToDuration';
-import getTotalDurationInSeconds from './lib/getTotalDurationInSeconds';
 import updateTimerOnTick from './lib/updateTimerOnTick';
-import setTimerStart from './lib/setTimerStart';
-import completeTimer from './lib/completeTimer';
 
 export const InitialState = new Record({
   timers: [],
@@ -42,11 +37,6 @@ const calculateStartTime = (endTime, durationInSeconds) => {
 
 const reducer = handleActions(
   {
-    [TIMER_COMPLETED]: (state, { payload }) => {
-      const timers = [...state.timers.map(completeTimer(payload))];
-      return state.set('timers', timers);
-    },
-
     [SUPER_TIMER_STARTED]: (state) => {
       if (state.timers.length === 0 || state.superTimer.active) {
         return state;
