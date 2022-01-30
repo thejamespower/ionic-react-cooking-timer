@@ -146,15 +146,9 @@ const Timer = (props) => {
           )}
         </IonItem>
         <IonItemOptions slide="right">
-          {parentId && (
-            <TimerCompleteButton id={id} hide={!active || !superTimerActive} />
-          )}
-          {!active && (
-            // @TODO: delete sub timer if delete parent
-            <TimerDeleteButton
-              hide={active || complete || superTimerActive}
-              id={id}
-            />
+          {parentId && complete && active && <TimerCompleteButton id={id} />}
+          {!active && !complete && !superTimerActive && (
+            <TimerDeleteButton id={id} />
           )}
         </IonItemOptions>
       </IonItemSliding>

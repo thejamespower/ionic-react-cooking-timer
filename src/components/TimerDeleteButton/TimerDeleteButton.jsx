@@ -5,10 +5,10 @@ import { trash } from 'ionicons/icons';
 import { useDispatch } from 'react-redux';
 import { deleteTimer } from '../../state/timers/timersSlice';
 
-const TimerDeleteButton = ({ hide = false, id }) => {
+const TimerDeleteButton = ({ id }) => {
   const dispatch = useDispatch();
 
-  return hide ? null : (
+  return (
     <IonItemOption onClick={() => dispatch(deleteTimer(id))} color="danger">
       <IonIcon icon={trash} slot="icon-only" />
     </IonItemOption>
@@ -16,7 +16,6 @@ const TimerDeleteButton = ({ hide = false, id }) => {
 };
 
 TimerDeleteButton.propTypes = {
-  hide: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 

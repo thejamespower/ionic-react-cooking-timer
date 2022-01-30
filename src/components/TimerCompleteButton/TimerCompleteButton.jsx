@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IonIcon, IonItemOption } from '@ionic/react';
 import { checkmark } from 'ionicons/icons';
-import { deleteTimer } from '../../state/timers/timersSlice';
 import { useDispatch } from 'react-redux';
+import { deleteTimer } from '../../state/timers/timersSlice';
 
-const TimerCompleteButton = ({ hide = false, id }) => {
+const TimerCompleteButton = ({ id }) => {
   const dispatch = useDispatch();
 
-  return hide ? null : (
+  return (
     <IonItemOption onClick={() => dispatch(deleteTimer(id))} color="success">
       <IonIcon icon={checkmark} slot="icon-only" />
     </IonItemOption>
@@ -16,7 +16,6 @@ const TimerCompleteButton = ({ hide = false, id }) => {
 };
 
 TimerCompleteButton.propTypes = {
-  hide: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 
