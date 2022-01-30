@@ -20,6 +20,7 @@ import {
 } from '@ionic/react';
 import { pause, play, timer } from 'ionicons/icons';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
+import EndTimeSetter from '../EndTimeSetter';
 
 const SuperTimer = (props) => {
   const { superTimer, startSuperTimer, tickSuperTimer, completeSuperTimer } =
@@ -67,20 +68,12 @@ const SuperTimer = (props) => {
       </IonCardHeader>
 
       <IonCardContent>
-        {/*<IonItem>*/}
-        {/*  <IonLabel>Total</IonLabel>*/}
-        {/*  <IonText>{duration}</IonText>*/}
-        {/*</IonItem>*/}
+        <IonItem>
+          <IonLabel>Start time</IonLabel>
+          <IonText>{startTime || 'Not set'}</IonText>
+        </IonItem>
 
-        {/*<IonItem>*/}
-        {/*  <IonLabel>Start time</IonLabel>*/}
-        {/*  <IonText>{startTime || 'Not set'}</IonText>*/}
-        {/*</IonItem>*/}
-
-        {/*<IonItem>*/}
-        {/*  <IonLabel>End time</IonLabel>*/}
-        {/*  <IonText>{endTime || 'Not set'}</IonText>*/}
-        {/*</IonItem>*/}
+        <EndTimeSetter />
 
         {complete && (
           <IonItem>

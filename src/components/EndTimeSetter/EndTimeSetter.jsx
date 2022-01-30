@@ -43,26 +43,19 @@ class EndTimeSetter extends Component {
     const { endTime } = this.state;
 
     return (
-      <IonCard>
-        <IonCardHeader>
-          <IonCardTitle>EndTimeSetter</IonCardTitle>
-        </IonCardHeader>
-        <IonCardContent>
-          <IonItem>
-            <IonLabel>End time</IonLabel>
-            <CustomTimeField value={endTime} onChange={this.changeEndTime} />
-          </IonItem>
-          <IonButton
-            color="primary"
-            expand="block"
-            onClick={() => {
-              this.addEndTime(endTime);
-            }}
-          >
-            Set end time
-          </IonButton>
-        </IonCardContent>
-      </IonCard>
+      <IonItem>
+        <IonLabel>End time</IonLabel>
+        <CustomTimeField value={endTime} onChange={this.changeEndTime} />
+        <IonButton
+          color="primary"
+          expand="block"
+          onClick={() => {
+            this.addEndTime(endTime);
+          }}
+        >
+          Set end time
+        </IonButton>
+      </IonItem>
     );
   }
 }
