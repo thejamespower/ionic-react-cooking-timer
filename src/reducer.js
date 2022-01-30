@@ -29,28 +29,12 @@ const initialState = new InitialState();
 const tickTimers = (timers, elapsedTime, totalTime) =>
   timers.map(updateTimerOnTick(elapsedTime, totalTime));
 
-const calculateStartTime = (endTime, durationInSeconds) => {
-  return convertSecondsToDuration(
-    convertDurationToSeconds(endTime) - durationInSeconds,
-  );
-};
-
 const reducer = handleActions(
   {
     [SUPER_TIMER_COMPLETED]: (state) =>
       state
         .setIn(['superTimer', 'complete'], true)
         .setIn(['superTimer', 'active'], false),
-
-    [END_TIME_SET]: (state, { payload }) => {
-      const startTime = calculateStartTime(
-        payload,
-        state.superTimer.durationInSeconds,
-      );
-      return state
-        .setIn(['superTimer', 'endTime'], payload)
-        .setIn(['superTimer', 'startTime'], startTime);
-    },
   },
   initialState,
 );

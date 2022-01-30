@@ -1,3 +1,3 @@
-import TimerCreator from './container';
+import EndTimeSetter from './EndTimeSetter';
 
-export default TimerCreator;
+export default EndTimeSetter;

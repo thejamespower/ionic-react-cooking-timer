@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { useDispatch } from 'react-redux';
 import { IonButton, IonItem, IonLabel } from '@ionic/react';
+
+import { setEndTime as setEndTimeAction } from '../../state/timers/timersSlice';
 import CustomTimeField from '../TimeField';
 
 const initialState = '19:00:00';
 
-const EndTimeSetter = ({ setEndTime: setEndTimeAction }) => {
+const EndTimeSetter = () => {
   const [endTime, setEndTime] = useState(initialState);
+
+  const dispatch = useDispatch();
 
   return (
     <IonItem>
@@ -17,7 +21,7 @@ const EndTimeSetter = ({ setEndTime: setEndTimeAction }) => {
         color="primary"
         expand="block"
         onClick={() => {
-          setEndTimeAction(endTime);
+          dispatch(setEndTimeAction(endTime));
         }}
       >
         Set end time
@@ -26,8 +30,6 @@ const EndTimeSetter = ({ setEndTime: setEndTimeAction }) => {
   );
 };
 
-EndTimeSetter.propTypes = {
-  setEndTime: PropTypes.func.isRequired,
-};
+EndTimeSetter.propTypes = {};
 
 export default EndTimeSetter;
