@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import updateTimerOnTick from '../../lib/updateTimerOnTick';
 import { createTimer as createTimerReducer } from './reducers/createTimer';
 import { createSubTimer as createSubTimerReducer } from './reducers/createSubTimer';
+import { deleteTimer as deleteTimerReducer } from './reducers/deleteTimer';
 
 export const initialState = {
   timers: [],
@@ -28,11 +29,12 @@ export const timersSlice = createSlice({
   reducers: {
     createTimer: createTimerReducer,
     createSubTimer: createSubTimerReducer,
+    deleteTimer: deleteTimerReducer,
   },
 });
 
 // actions
-export const { createTimer, createSubTimer } = timersSlice.actions;
+export const { createTimer, createSubTimer, deleteTimer } = timersSlice.actions;
 
 // selectors
 export const selectTimers = (state) => state.timers.timers;

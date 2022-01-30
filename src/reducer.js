@@ -42,34 +42,6 @@ const calculateStartTime = (endTime, durationInSeconds) => {
 
 const reducer = handleActions(
   {
-    [TIMER_DELETED]: (state, { payload }) => {
-      if (!payload || state.superTimer.active) {
-        return state;
-      }
-
-      // Get timers to keep
-      const timers = [
-        ...state.timers.filter(
-          (x) => x.id !== payload && x.parentId !== payload,
-        ),
-      ];
-
-      const totalDurationInSeconds = getTotalDurationInSeconds(timers);
-
-      // Set timers new start time
-      const transformedTimers = timers.map(
-        setTimerStart(totalDurationInSeconds),
-      );
-
-      return state
-        .set('timers', transformedTimers)
-        .setIn(['superTimer', 'durationInSeconds'], totalDurationInSeconds)
-        .setIn(
-          ['superTimer', 'duration'],
-          convertSecondsToDuration(totalDurationInSeconds),
-        );
-    },
-
     [TIMER_COMPLETED]: (state, { payload }) => {
       const timers = [...state.timers.map(completeTimer(payload))];
       return state.set('timers', timers);

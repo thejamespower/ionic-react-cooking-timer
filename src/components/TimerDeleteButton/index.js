@@ -1,3 +1,3 @@
-import TimerDeleteButton from './container';
+import TimerDeleteButton from './TimerDeleteButton';
 
 export default TimerDeleteButton;
