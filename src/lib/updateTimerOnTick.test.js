@@ -1,16 +1,33 @@
 import updateTimerOnTick from './updateTimerOnTick';
-import convertSecondsToDuration from './convertSecondsToDuration';
-
-jest.mock('./convertSecondsToDuration');
 
 describe('timersNewStart', () => {
-  beforeAll(() => {
-    convertSecondsToDuration.mockImplementation((a) => a);
-  });
+  const testTimerDidNotStart = (elapsedTime, totalTime, x) => {
+    describe('given time to start > 0', () => {
+      it('does not start timer', () => {
+        const run = updateTimerOnTick(elapsedTime, totalTime)(x);
+        expect(run).toEqual({
+          ...x,
+          timeToStartInSeconds: 90,
+          timeToStart: '00:01:30',
+          active: false,
+        });
+      });
+    });
+  };
 
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
+  const testTimerDidStart = (elapsedTime, totalTime, x) => {
+    describe('given time to start <= 0', () => {
+      it('starts timer', () => {
+        const run = updateTimerOnTick(elapsedTime, totalTime)(x);
+        expect(run).toEqual({
+          ...x,
+          timeToStartInSeconds: 0,
+          timeToStart: '00:00:00',
+          active: true,
+        });
+      });
+    });
+  };
 
   describe('given elapsedTime ', () => {
     const elapsedTime = 100;
@@ -22,41 +39,8 @@ describe('timersNewStart', () => {
         durationInSeconds: 10,
       };
 
-      const assertCommon = (totalTime, timeToStart) => {
-        it('returns destructured x', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ ...x }));
-        });
-
-        it('returns property calculateTimeToStartInSeconds', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(
-            expect.objectContaining({ timeToStartInSeconds: timeToStart }),
-          );
-        });
-      };
-
-      describe('given calculateTimeToStartInSeconds != 0', () => {
-        const totalTime = 200;
-
-        assertCommon(totalTime, totalTime - x.durationInSeconds - elapsedTime);
-
-        it('returns property active = false', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ active: false }));
-        });
-      });
-
-      describe('given calculateTimeToStartInSeconds = 0', () => {
-        const totalTime = 110;
-
-        assertCommon(totalTime, totalTime - x.durationInSeconds - elapsedTime);
-
-        it('returns property active = true', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ active: true }));
-        });
-      });
+      testTimerDidNotStart(elapsedTime, 200, x);
+      testTimerDidStart(elapsedTime, 110, x);
     });
 
     describe('given sub', () => {
@@ -64,39 +48,14 @@ describe('timersNewStart', () => {
         id: 'flip-chips',
         parentId: 'chips',
         name: 'Flip Chips 🍟',
-        durationInSeconds: 10,
-        timeToStartInSeconds: 0,
+        durationInSeconds: 5,
+        timeToStartInSeconds: 90,
         active: false,
+        offsetInSeconds: 5,
       };
 
-      const assertCommon = (totalTime, timeToStart) => {
-        it('returns correct', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ ...x, active: true }));
-        });
-      };
-
-      describe('given calculateTimeToStartInSeconds != 0', () => {
-        const totalTime = 200;
-
-        assertCommon(totalTime, totalTime - x.durationInSeconds - elapsedTime);
-
-        it('returns property active = false', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ active: false }));
-        });
-      });
-
-      describe('given calculateTimeToStartInSeconds = 0', () => {
-        const totalTime = 110;
-
-        assertCommon(totalTime, totalTime - x.durationInSeconds - elapsedTime);
-
-        it('returns property active = true', () => {
-          const run = updateTimerOnTick(elapsedTime, totalTime)(x);
-          expect(run).toEqual(expect.objectContaining({ active: true }));
-        });
-      });
+      testTimerDidNotStart(elapsedTime, 200, x);
+      testTimerDidStart(elapsedTime, 110, x);
     });
   });
 });

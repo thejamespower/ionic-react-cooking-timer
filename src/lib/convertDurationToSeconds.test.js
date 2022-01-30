@@ -1,17 +1,14 @@
 import convertDurationToSeconds from './convertDurationToSeconds';
 
 describe('convertDurationToSeconds', () => {
-  beforeAll(() => {});
-
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
-
-  describe('given duration of "01:10:21"', () => {
-    const duration = '01:10:21'; // 1 hour, 10 mins and 21 seconds
-
-    it('returns 4221', () => {
-      expect(convertDurationToSeconds(duration)).toEqual(4221);
-    });
+  it.each([
+    { expected: 0, duration: '00:00:00' },
+    { expected: 60, duration: '00:01:00' },
+    { expected: 200, duration: '00:03:20' },
+    { expected: 600, duration: '00:10:00' },
+    { expected: 6600, duration: '01:50:00' },
+    { expected: 6660, duration: '01:51:00' },
+  ])('returns $expected for $duration', ({ duration, expected }) => {
+    expect(convertDurationToSeconds(duration)).toEqual(expected);
   });
 });
