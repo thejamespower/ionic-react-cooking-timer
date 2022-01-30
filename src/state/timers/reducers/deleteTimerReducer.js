@@ -2,7 +2,7 @@ import getTotalDurationInSeconds from '../../../lib/getTotalDurationInSeconds';
 import setTimerStart from '../../../lib/setTimerStart';
 import convertSecondsToDuration from '../../../lib/convertSecondsToDuration';
 
-export const deleteTimer = (state, { payload }) => {
+export const deleteTimerReducer = (state, { payload }) => {
   if (!payload || state.superTimer.active) {
     return state;
   }

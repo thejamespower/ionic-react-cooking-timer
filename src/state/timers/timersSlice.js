@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import updateTimerOnTick from '../../lib/updateTimerOnTick';
-import { createTimer as createTimerReducer } from './reducers/createTimer';
-import { createSubTimer as createSubTimerReducer } from './reducers/createSubTimer';
-import { deleteTimer as deleteTimerReducer } from './reducers/deleteTimer';
+import { createTimerReducer } from './reducers/createTimerReducer';
+import { createSubTimerReducer } from './reducers/createSubTimerReducer';
+import { deleteTimerReducer } from './reducers/deleteTimerReducer';
 import { completeTimerReducer } from './reducers/completeTimerReducer';
 
 export const initialState = {

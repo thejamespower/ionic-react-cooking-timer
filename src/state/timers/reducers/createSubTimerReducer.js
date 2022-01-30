@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import convertDurationToSeconds from '../../../lib/convertDurationToSeconds';
 
-export const createSubTimer = (state, { payload }) => {
+export const createSubTimerReducer = (state, { payload }) => {
   if (!state.timers.length || state.superTimer.active || !payload.name) {
     return state;
   }

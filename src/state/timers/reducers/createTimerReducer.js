@@ -9,7 +9,7 @@ const calculateStartTime = (endTime, durationInSeconds) => {
     convertDurationToSeconds(endTime) - durationInSeconds,
   );
 };
-export const createTimer = (state, { payload }) => {
+export const createTimerReducer = (state, { payload }) => {
   if (
     payload.duration === '00:00:00' ||
     state.superTimer.active ||
