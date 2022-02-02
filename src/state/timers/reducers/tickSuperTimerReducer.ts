@@ -1,6 +1,10 @@
 import { tickTimers } from './startSuperTimerReducer';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-export const tickSuperTimerReducer = (state, { payload }) => {
+export const tickSuperTimerReducer = (
+  state: any,
+  { payload }: PayloadAction<number>,
+) => {
   if (state.timers.length === 0 || !state.superTimer.active) {
     return state;
   }

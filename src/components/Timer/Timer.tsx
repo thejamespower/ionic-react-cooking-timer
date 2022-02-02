@@ -16,20 +16,31 @@ import {
 } from '@ionic/react';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import TimerCompleteButton from '../TimerCompleteButton';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   finishTimer,
   superTimerSelector,
 } from '../../state/timers/timersSlice';
+import { Duration } from '../TimeField/TimeField';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-const Timer = (props) => {
+const Timer = (props: {
+  timer: {
+    name: string;
+    active: boolean;
+    duration: Duration;
+    timeToStart: Duration;
+    id: string;
+    finished: boolean;
+    parentId: string;
+  };
+}) => {
   const {
     timer: { name, active, duration, timeToStart, id, finished, parentId },
   } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { active: superTimerActive, elapsedTime } =
-    useSelector(superTimerSelector);
+    useAppSelector(superTimerSelector);
 
   const value = finished
     ? 0
@@ -58,7 +69,7 @@ const Timer = (props) => {
         }}
       />
     ),
-    [active],
+    [dispatch, duration, id, name, parentId, present],
   );
 
   const TimeToStart = () => (
@@ -145,7 +156,7 @@ const Timer = (props) => {
             </IonGrid>
           )}
         </IonItem>
-        <IonItemOptions slide="right">
+        <IonItemOptions>
           {parentId && finished && active && <TimerCompleteButton id={id} />}
           {!active && !finished && !superTimerActive && (
             <TimerDeleteButton id={id} />

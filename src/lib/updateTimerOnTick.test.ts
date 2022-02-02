@@ -1,7 +1,16 @@
+import {
+  Timer,
+  SubTimer,
+  SubTimerWithTimeToStart,
+} from '../state/timers/timersSlice';
 import updateTimerOnTick from './updateTimerOnTick';
 
 describe('timersNewStart', () => {
-  const testTimerDidNotStart = (elapsedTime, totalTime, x) => {
+  const testTimerDidNotStart = (
+    elapsedTime: number,
+    totalTime: number,
+    x: (Timer & { offsetInSeconds?: number }) | SubTimer,
+  ) => {
     describe('given time to start > 0', () => {
       it('does not start timer', () => {
         const run = updateTimerOnTick(elapsedTime, totalTime)(x);
@@ -15,7 +24,11 @@ describe('timersNewStart', () => {
     });
   };
 
-  const testTimerDidStart = (elapsedTime, totalTime, x) => {
+  const testTimerDidStart = (
+    elapsedTime: number,
+    totalTime: number,
+    x: (Timer & { offsetInSeconds?: number }) | SubTimer,
+  ) => {
     describe('given time to start <= 0', () => {
       it('starts timer', () => {
         const run = updateTimerOnTick(elapsedTime, totalTime)(x);
@@ -33,10 +46,13 @@ describe('timersNewStart', () => {
     const elapsedTime = 100;
 
     describe('given parent', () => {
-      const x = {
+      const x: Timer = {
         id: 'chips',
         name: 'Chips 🍟',
         durationInSeconds: 10,
+        duration: '00:00:10',
+        active: false,
+        finished: false,
       };
 
       testTimerDidNotStart(elapsedTime, 200, x);
@@ -44,13 +60,17 @@ describe('timersNewStart', () => {
     });
 
     describe('given sub', () => {
-      const x = {
+      const x: SubTimerWithTimeToStart = {
         id: 'flip-chips',
         parentId: 'chips',
         name: 'Flip Chips 🍟',
+        duration: '00:00:05',
         durationInSeconds: 5,
+        timeToStart: '00:01:30',
         timeToStartInSeconds: 90,
+        finished: false,
         active: false,
+        offset: '00:00:05',
         offsetInSeconds: 5,
       };
 

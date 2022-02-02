@@ -1,8 +1,10 @@
 import getTotalDurationInSeconds from './getTotalDurationInSeconds';
+import { Timer } from '../state/timers/timersSlice';
+import convertSecondsToDuration from './convertSecondsToDuration';
 
 describe('getTotalDurationInSeconds', () => {
   describe('given no timers', () => {
-    const timers = [];
+    const timers: Timer[] = [];
 
     it('returns 0', () => {
       expect(getTotalDurationInSeconds(timers)).toEqual(0);
@@ -26,7 +28,18 @@ describe('getTotalDurationInSeconds', () => {
         expected: 100,
       },
     ])('returns total duration of $expected', ({ timers, expected }) => {
-      expect(getTotalDurationInSeconds(timers)).toEqual(expected);
+      expect(
+        getTotalDurationInSeconds(
+          timers.map(({ durationInSeconds }) => ({
+            durationInSeconds,
+            name: `${durationInSeconds}`,
+            id: `${durationInSeconds}`,
+            active: false,
+            finished: false,
+            duration: convertSecondsToDuration(durationInSeconds),
+          })),
+        ),
+      ).toEqual(expected);
     });
   });
 });

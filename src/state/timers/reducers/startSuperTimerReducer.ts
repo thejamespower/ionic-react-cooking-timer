@@ -1,9 +1,15 @@
 import updateTimerOnTick from '../../../lib/updateTimerOnTick';
+import { Timer } from '../timersSlice';
 
-export const tickTimers = (timers, elapsedTime, totalTime) =>
-  timers.map(updateTimerOnTick(elapsedTime, totalTime));
+export const tickTimers = (
+  timers: Timer[],
+  elapsedTime: number,
+  totalTime: number,
+) => {
+  return timers.map(updateTimerOnTick(elapsedTime, totalTime));
+};
 
-export const startSuperTimerReducer = (state) => {
+export const startSuperTimerReducer = (state: any) => {
   if (state.timers.length === 0 || state.superTimer.active) {
     return state;
   }

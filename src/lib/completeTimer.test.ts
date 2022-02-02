@@ -1,11 +1,15 @@
 import finishTimer from './finishTimer';
+import { Timer } from '../state/timers/timersSlice';
 
 describe('finishTimer', () => {
   describe('given timer', () => {
-    const timer = {
+    const timer: Timer = {
       id: '1',
       active: true,
       finished: false,
+      name: 'Chips',
+      duration: '00:00:00',
+      durationInSeconds: 0,
     };
 
     describe('when id equals timer.id', () => {
@@ -13,9 +17,12 @@ describe('finishTimer', () => {
 
       it('finishes timer', () => {
         expect(finishTimer(id)(timer)).toEqual({
+          id: '1',
           active: false,
           finished: true,
-          id: '1',
+          name: 'Chips',
+          duration: '00:00:00',
+          durationInSeconds: 0,
         });
       });
     });
@@ -25,9 +32,12 @@ describe('finishTimer', () => {
 
       it('returns timer', () => {
         expect(finishTimer(id)(timer)).toEqual({
+          id: '1',
           active: true,
           finished: false,
-          id: '1',
+          name: 'Chips',
+          duration: '00:00:00',
+          durationInSeconds: 0,
         });
       });
     });

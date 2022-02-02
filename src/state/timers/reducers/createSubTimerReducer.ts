@@ -1,7 +1,20 @@
 import { v4 as uuid } from 'uuid';
 import convertDurationToSeconds from '../../../lib/convertDurationToSeconds';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { Duration } from '../../../components/TimeField/TimeField';
 
-export const createSubTimerReducer = (state, { payload }) => {
+export const createSubTimerReducer = (
+  state: any,
+  {
+    payload,
+  }: PayloadAction<{
+    duration: Duration;
+    id: string;
+    parentId: string;
+    name: string;
+    offset: Duration;
+  }>,
+) => {
   if (!state.timers.length || state.superTimer.active || !payload.name) {
     return state;
   }

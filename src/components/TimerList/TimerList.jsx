@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { IonList } from '@ionic/react';
-import { useSelector } from 'react-redux';
 
 import Timer from '../Timer';
 import { selectTimers } from '../../state/timers/timersSlice';
+import { useAppSelector } from '../../hooks';
 
 const TimerList = () => {
-  const [...timers] = useSelector(selectTimers);
+  const [...timers] = useAppSelector(selectTimers);
 
   return timers.length ? (
     <IonList>

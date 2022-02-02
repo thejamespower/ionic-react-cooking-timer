@@ -22,14 +22,30 @@ import {
   IonFooter,
 } from '@ionic/react';
 import { add, checkmark, close as closeIcon, time } from 'ionicons/icons';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks';
 import CustomTimeField from '../TimeField';
 import convertSecondsToDuration from '../../lib/convertSecondsToDuration';
 import convertDurationToSeconds from '../../lib/convertDurationToSeconds';
 import {
   createTimer as createTimerAction,
   createSubTimer as createSubTimerAction,
+  SubTimer,
+  Timer,
 } from '../../state/timers/timersSlice';
+import { Duration } from '../TimeField/TimeField';
+
+interface TimerCreatorTimer
+  extends Omit<Timer, 'durationInSeconds' | 'active' | 'finished'> {
+  subTimers: Omit<
+    SubTimer,
+    | 'durationInSeconds'
+    | 'active'
+    | 'finished'
+    | 'offset'
+    | 'offsetInSeconds'
+    | 'parentId'
+  >[];
+}
 
 const zeroDuration = '00:00:00';
 const USE_DEV_STATE = true;
@@ -51,18 +67,30 @@ const initialState = USE_DEV_STATE
       duration: zeroDuration,
       subTimers: [],
       name: '',
+      id: '',
     };
 
-const TimerCreator = ({ close, isOpen }) => {
-  const dispatch = useDispatch();
+const TimerCreator = ({
+  close,
+  isOpen,
+}: {
+  close: () => void;
+  isOpen: boolean;
+}) => {
+  const dispatch = useAppDispatch();
 
-  const [{ duration, name, subTimers }, setTimer] = useState(initialState);
+  const [{ duration, name, subTimers }, setTimer] = useState(
+    initialState as TimerCreatorTimer,
+  );
 
-  const changeDuration = (duration) => {
+  const changeDuration = (duration: Duration) => {
     setTimer((timer) => ({ ...timer, duration }));
   };
 
-  const changeSubTimerDuration = (subTimer, duration) => {
+  const changeSubTimerDuration = (
+    subTimer: Partial<SubTimer>,
+    duration: Duration,
+  ) => {
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.map((timer) =>
@@ -76,7 +104,7 @@ const TimerCreator = ({ close, isOpen }) => {
     }));
   };
 
-  const changeSubTimerName = (subTimer, name) => {
+  const changeSubTimerName = (subTimer: Partial<SubTimer>, name: string) => {
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.map((timer) =>
@@ -138,18 +166,18 @@ const TimerCreator = ({ close, isOpen }) => {
     }));
   };
 
-  const removeSubTimer = (id) => {
+  const removeSubTimer = (id: string) => {
     setTimer((timer) => ({
       ...timer,
       subTimers: subTimers.filter((timers) => timers.id !== id),
     }));
   };
 
-  const handleChange = (name) => {
-    return (event) => {
+  const handleChange = (name: string) => {
+    return (event: CustomEvent) => {
       setTimer((timer) => ({
         ...timer,
-        [name]: event.target.value,
+        [name]: (event.target as HTMLInputElement).value,
       }));
     };
   };
@@ -217,9 +245,9 @@ const TimerCreator = ({ close, isOpen }) => {
                       <IonTitle>Sub timer</IonTitle>
                       <IonButtons slot="end">
                         <IonButton
-                          onClick={() => {
-                            removeSubTimer(subTimer.id);
-                          }}
+                          onClick={() =>
+                            subTimer.id && removeSubTimer(subTimer.id)
+                          }
                         >
                           <IonIcon icon={closeIcon} />
                           Delete
@@ -233,7 +261,10 @@ const TimerCreator = ({ close, isOpen }) => {
                           placeholder={'flip, check, stir'}
                           value={subTimer.name}
                           onIonChange={(event) =>
-                            changeSubTimerName(subTimer, event.target.value)
+                            changeSubTimerName(
+                              subTimer,
+                              (event.target as HTMLInputElement).value,
+                            )
                           }
                         />
                       </IonItem>
