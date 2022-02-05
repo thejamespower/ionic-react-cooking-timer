@@ -48,27 +48,27 @@ interface TimerCreatorTimer
 }
 
 const zeroDuration = '00:00:00';
-const USE_DEV_STATE = true;
-const initialState = USE_DEV_STATE
-  ? {
-      duration: '00:02:00',
-      subTimers: [
-        {
-          name: 'Flip',
-          id: 'flip',
-          parentId: 'chips',
-          duration: '00:01:00',
-        },
-      ],
-      name: 'Chips 🍟',
-      id: 'chips',
-    }
-  : {
-      duration: zeroDuration,
-      subTimers: [],
-      name: '',
-      id: '',
-    };
+const initialState =
+  process.env.NODE_ENV === 'development'
+    ? {
+        duration: '00:02:00',
+        subTimers: [
+          {
+            name: 'Flip',
+            id: 'flip',
+            parentId: 'chips',
+            duration: '00:01:00',
+          },
+        ],
+        name: 'Chips 🍟',
+        id: 'chips',
+      }
+    : {
+        duration: zeroDuration,
+        subTimers: [],
+        name: '',
+        id: '',
+      };
 
 const TimerCreator = ({
   close,
@@ -219,9 +219,9 @@ const TimerCreator = ({
               {duration}
               <IonIcon icon={time} />
             </IonButton>
-            {/*<IonPopover trigger="open-time-input" showBackdrop={false}>*/}
-            <CustomTimeField value={duration} onChange={changeDuration} />
-            {/*</IonPopover>*/}
+            <IonPopover trigger="open-time-input" showBackdrop={false}>
+              <CustomTimeField value={duration} onChange={changeDuration} />
+            </IonPopover>
           </IonItem>
 
           <IonList>
