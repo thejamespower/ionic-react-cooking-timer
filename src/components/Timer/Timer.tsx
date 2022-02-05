@@ -72,42 +72,45 @@ const Timer = (props: {
     [dispatch, duration, id, name, parentId, present],
   );
 
-  const TimeToStart = () => (
-    <IonCol>
-      <IonGrid>
-        <IonRow className="ion-justify-content-end">
-          <IonText>Start</IonText>
-        </IonRow>
-        <IonRow className="ion-justify-content-end">{timeToStart}</IonRow>
-      </IonGrid>
-    </IonCol>
-  );
+  const TimeToStart = () =>
+    !active ? (
+      <IonCol>
+        <IonGrid>
+          <IonRow className="ion-justify-content-end">
+            <IonText>Start</IonText>
+          </IonRow>
+          <IonRow className="ion-justify-content-end">{timeToStart}</IonRow>
+        </IonGrid>
+      </IonCol>
+    ) : null;
 
-  const LeftDuration = () => (
-    <IonCol>
-      <IonGrid>
-        <IonRow className="ion-justify-content-end">
-          <IonText>Left</IonText>
-        </IonRow>
-        <IonRow className="ion-justify-content-end">
-          <IonText>{duration}</IonText>
-        </IonRow>
-      </IonGrid>
-    </IonCol>
-  );
+  const LeftDuration = () =>
+    active ? (
+      <IonCol>
+        <IonGrid>
+          <IonRow className="ion-justify-content-end">
+            <IonText>Left</IonText>
+          </IonRow>
+          <IonRow className="ion-justify-content-end">
+            <IonText>{duration}</IonText>
+          </IonRow>
+        </IonGrid>
+      </IonCol>
+    ) : null;
 
-  const Duration = () => (
-    <IonCol>
-      <IonGrid>
-        <IonRow className="ion-justify-content-end">
-          <IonText>Duration</IonText>
-        </IonRow>
-        <IonRow className="ion-justify-content-end">
-          <IonText>{duration}</IonText>
-        </IonRow>
-      </IonGrid>
-    </IonCol>
-  );
+  const Duration = () =>
+    !active ? (
+      <IonCol>
+        <IonGrid>
+          <IonRow className="ion-justify-content-end">
+            <IonText>Duration</IonText>
+          </IonRow>
+          <IonRow className="ion-justify-content-end">
+            <IonText>{duration}</IonText>
+          </IonRow>
+        </IonGrid>
+      </IonCol>
+    ) : null;
 
   return (
     //  @TODO: only slide when sliding options available (validation)
